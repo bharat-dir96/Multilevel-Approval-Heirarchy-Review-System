@@ -136,6 +136,10 @@ def login_page():
 
             if attempted_user and attempted_user.is_verified and attempted_user.check_password_correction(attempted_password=form.password.data):
                 #To verify all the credentials of the user like username existence, password and verification done or not.
+<<<<<<< HEAD
+=======
+                # print(attempted_user.role)
+>>>>>>> 4a92a61c0541ab479032a498e86a1f27aa04d6ca
                 login_user(attempted_user)
                 attempted_user.update_last_login()
 

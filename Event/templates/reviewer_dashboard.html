@@ -4,9 +4,45 @@
 {% endblock %}
 
 {%block content %}
-<body class="text-center">
-    <div class="container">
-        <h1>Event Invitations</h1>
+<body>
+    <div id="flash-message" class="alert alert-info" style="display:none"></div>
+
+    <div class="position-relative overflow-hidden p-5 p-md-7 m-md-3 text-center row" style="background-color:rgb(16, 98, 112); color:white">
+
+        <div class="col-md-4">
+            <div class="profile">
+                <div class="card" style="color:black">
+                    {% if profile_details %}
+                        {% for profile in profile_details %}
+                            <div class="row">                           <!--A unique row consists of both the columns-->
+                                <div class="col-md-8">                  <!--Column for the card content-->
+                                    <div class="card-body text-center">
+                                        <p style="display:inline-block;">
+                                            <img class="mb-4 rounded-circle" src="../static/Images/noun-person-1691897.png" width="40" height="40" alt="">
+                                            {{ profile.full_name }}
+                                        </p>
+                                        <p style="display:inline-block;">
+                                            <img class="mb-4 rounded-circle" src="../static/Images/noun-job-3754647.png" width="40" height="40" alt="">
+                                            {{ profile.current_position }}, {{ profile.current_company }}
+                                        </p>
+                                        <p style="display:inline-block;">
+                                            <img class="mb-4 rounded-circle" src="../static/Images/noun-world-1627682.png" width="40" height="40" alt="">
+                                            {{profile.current_city }}, {{ profile.current_country }}
+                                        </p>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <h5>Something is Wrong.</h5>
+                    {% endif %}    
+                </div>  
+            </div>        
+        </div>
+    
+        <div class="product-device box-shadow d-none d-md-block"></div>
+        <div class="product-device product-device-2 box-shadow d-none d-md-block"></div>
     </div>
 </body>
 {%endblock %}

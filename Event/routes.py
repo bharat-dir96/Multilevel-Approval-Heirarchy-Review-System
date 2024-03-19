@@ -136,7 +136,6 @@ def login_page():
 
             if attempted_user and attempted_user.is_verified and attempted_user.check_password_correction(attempted_password=form.password.data):
                 #To verify all the credentials of the user like username existence, password and verification done or not.
-                print(attempted_user.role)
                 login_user(attempted_user)
                 attempted_user.update_last_login()
 
@@ -598,8 +597,8 @@ def create_user():
 
 @app.route('/reviewer-dashboard', methods=['GET', 'POST'])
 def reviewer_dashboard():
+    profile_details = Reviewer.query.filter((Reviewer.id == current_user.id)).all()
+    print(current_user.id)
+    print(profile_details)
+    return render_template('reviewer_dashboard.html', profile_details=profile_details)
 
-    return render_template('reviewer_dashboard.html')
-
-        
-        

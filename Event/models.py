@@ -117,6 +117,10 @@ class Guest(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     username = db.Column(db.String(20), nullable=False, unique=True)
     hash_password = db.Column(db.String(length=60), nullable=True)
+    is_active = db.Column(db.Boolean, default=True)
+
+    def get_id(self):
+        return str(self.id)
 
     @property
     def password(self):

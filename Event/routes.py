@@ -136,10 +136,7 @@ def login_page():
 
             if attempted_user and attempted_user.is_verified and attempted_user.check_password_correction(attempted_password=form.password.data):
                 #To verify all the credentials of the user like username existence, password and verification done or not.
-<<<<<<< HEAD
-=======
                 # print(attempted_user.role)
->>>>>>> 4a92a61c0541ab479032a498e86a1f27aa04d6ca
                 login_user(attempted_user)
                 attempted_user.update_last_login()
 
@@ -152,15 +149,19 @@ def login_page():
                 else:
                     flash('Uggh! Your Credentials is not associated with the user role you selected. Please try again', category='danger')
             else:
-                flash('Username and password are not match! or Email Verification is not done or You are not registered as a reviewer. Please try again', category='danger')
+                flash(f'Username and password are not match! or Email Verification is not done or You are not registered as {Role}. Please try again', category='danger')
 
         else:
             try:
                 if attempted_reviewer and attempted_reviewer.check_password_correction(attempted_password=form.password.data):
-                    flash(f'Success!! Welcome {attempted_reviewer.username}', category='success')
-                    return redirect(url_for('reviewer_dashboard'))
+                    if attempted_reviewer.is_active:
+                        login_user(attempted_reviewer)
+                        flash(f'Success!! Welcome {attempted_reviewer.username}', category='success')
+                        return redirect(url_for('reviewer_dashboard'))
+                    else:
+                        flash('Your account is not active. Please contact support.', category='danger')
                 else:
-                    flash('Username and password are not match! or you are not registered as a reviewer. Please try again', category='danger')
+                    flash(f'Username and password are not match! or you are not registered as {Role}. Please try again', category='danger')
             except ValueError as e:
                 print("Error Verifying password", e)
 
@@ -600,9 +601,18 @@ def create_user():
 
 
 @app.route('/reviewer-dashboard', methods=['GET', 'POST'])
+# @login_required
 def reviewer_dashboard():
+    # if current_user.is_authenticated:
     profile_details = Reviewer.query.filter((Reviewer.id == current_user.id)).all()
     print(current_user.id)
     print(profile_details)
     return render_template('reviewer_dashboard.html', profile_details=profile_details)
+    # else:
+    #     flash('You need to log in to access this page', 'warning')
+    #     return redirect(url_for('login_page'))
 
+@app.route('/track-event', methods=['GET','POST'])
+def track_events():
+    submission = Submissions.query.filter(Submissions.event_id == event.event.id)
+    return render_template('track_event.html', submission=submission)

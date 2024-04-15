@@ -7,35 +7,47 @@
 
     <div id="flash-message" class="alert alert-info" style="display:none"></div>
     
-    <div class="position-relative overflow-hidden p-5 p-md-7 m-md-3 text-center" style="background-color:rgb(16, 98, 112); color:white">
-        <br>
-        <h5 class="text-left text-decoration-underline">Select an Event to register - </h5>
-        <br><br>
+    <div class="position-relative overflow-hidden p-5 p-md-7 m-md-3 text-center row" style="background-color:rgb(16, 98, 112); color:white">
 
-        <div class="card text-left" style="color:black">
-            <div class="card-header">                   <!--Header of the card -->
-                Featured
-            </div>
-            {% if event_approved %}
-                {% for event in event_approved %}
+        <div class="col-md-10">
+            <br>
+            <h5 class="text-left text-decoration-underline">Select an Event to register - </h5>
+            <br>
 
-                    <div class="row">                           <!--A unique row consists of both the columns-->
-                        <div class="col-md-2">                  <!--Column for the image-->
-                            <img src="../static/Images/Dropbox AI hackathon.png" alt="Hackathon Image" class="card-image img-fluid">
-                        </div>
-                        <div class="col-md-10">                  <!--Column for the card content-->
-                            <div class="card-body">
-                                <h2 class="card-title">{{ event.title }}</h2>
-                                <h6 class="card-text">{{ event.acronym }}</h6>
-                                <p class="card-text">Deadline: {{ event.last_day.strftime('%d/%m/%Y') }}</p>
-                                <a href="{{ url_for('event_registration', event_id=event.id) }}" class="btn btn-primary">Regsiter Here</a>
+            <div class="showcase-events">
+                {% if event_approved %}
+                    {% for event in event_approved %}
+                        <div class="card text-left" style="color:black">
+                            <div class="card-header">                   <!--Header of the card -->
+                                Featured
+                            </div>
+
+                            <div class="row">                           <!--A unique row consists of both the columns-->
+                                <div class="col-md-2">                  <!--Column for the image-->
+                                    <img src="../static/Images/Dropbox AI hackathon.png" alt="Hackathon Image" class="card-image img-fluid">
+                                </div>
+                                <div class="col-md-8">                  <!--Column for the card content-->
+                                    <div class="card-body">
+                                        <h2 class="card-title">{{ event.title }}</h2>
+                                        <h6 class="card-text">{{ event.acronym }}</h6>
+                                        <p class="card-text">Deadline: {{ event.last_day.strftime('%d/%m/%Y') }}</p>
+                                        <a href="{{ url_for('event_registration', event_id=event.id) }}" class="btn btn-primary">Regsiter Here</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p>No Event is active.</p>
-            {% endif %}
+                        <br><br>
+                    {% endfor %}
+                {% else %}
+                    <p>No Event is active.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="event-details text-left">
+                <h3>Registerd Events -  </h3>
+            </div>        
         </div>
 
         <div class="product-device box-shadow d-none d-md-block"></div>

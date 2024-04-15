@@ -10,23 +10,25 @@
         <div class="col-md-10">
             <br>
             <h3 class="text-left">Your Events - </h3>
-            <br><br>
+            <br>
 
-            <div class="card text-left" style="color:black">
+            <div class="event-details">
                 {% if organizer_events %}
                     {% for event in organizer_events %}
-                    
-                        <div class="row">                           <!--A unique row consists of both the columns-->
-                            <div class="col-md-10">                  <!--Column for the card content-->
-                                <div class="card-body">
-                                    <h2 class="card-title">{{ event.title }}</h2>
-                                    <a href="{{ event.web_page_url }}" class="card-text">{{ event.web_page_url }}</a>
-                                    <br>
-                                    <p class="card-text">Deadline: {{ event.last_day.strftime('%d/%m/%Y') }}</p>
-                                    <a href="#" class="btn btn-primary">Track Event</a>
+                        <div class="card text-left" style="color:black">
+                            <div class="row">                           <!--A unique row consists of both the columns-->
+                                <div class="col-md-10">                  <!--Column for the card content-->
+                                    <div class="card-body">
+                                        <h2 class="card-title">{{ event.title }}</h2>
+                                        <a href="{{ event.web_page_url }}" class="card-text">{{ event.web_page_url }}</a>
+                                        <br>
+                                        <p class="card-text">Deadline: {{ event.last_day.strftime('%d/%m/%Y') }}</p>
+                                        <a href="{{ url_for('track_events') }}" class="btn btn-primary">Track Event</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <br><br>
                     {% endfor %}
                 {% else %}
                     <h5>You have not created any event yet.</h5>

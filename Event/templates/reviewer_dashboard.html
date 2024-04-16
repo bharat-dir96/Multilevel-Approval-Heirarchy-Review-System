@@ -4,45 +4,301 @@
 {% endblock %}
 
 {%block content %}
+<head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: rgb(49, 150, 168);
+        }
+
+        .container {    
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 10px 15px;
+            padding: 20px;
+        }
+
+        .box {
+            padding: 30px;
+            margin-bottom: 0px;
+            border: 1px solid black;
+            background-color: white;
+            box-sizing: border-box;
+            border-radius: 30px; /* Rounded corners */
+        }
+
+        .upload-circle {
+            width: 150px;
+            height: 150px;
+            border: 1px solid black;
+            border-radius: 60%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            cursor: pointer;
+        }
+
+        .upload-circle img {
+            width: 150px;
+            height: 155px;
+            border-radius: 60%;
+        }
+
+        .field {
+            margin-bottom: 15px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .field .box-input {
+            width: calc(100% - 30px);
+            padding: 5px;
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            min-height: 30px;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        .heading {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-decoration: underline;
+        }
+
+        .details {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .details .field {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .status-boxes {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .work-status-box {
+            grid-column: span 12;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .work-status .status-box-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .work-status-box .status-box {
+            flex-grow: 1;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 60px;
+            height: 170px;
+            border: 1px solid black; /* Add black outline */
+            margin-bottom: 20px;
+            border-radius: 30px;
+        }
+
+        .status-box.pending {
+            background-color: rgb(250, 244, 182);
+            margin-right: 15px;
+        }
+
+       .box-value{
+            font-size: 50px;
+            padding: 15px;
+       }
+
+        .status-box.completed {
+            background-color: rgb(130, 211, 246);
+            margin-left: 15px;
+        }
+
+        .light-blue {
+            color: rgb(49, 150, 168);
+            border-color: rgb(49, 150, 168);
+        }
+
+        .numbers{
+            font-size: 20px;
+        }
+
+        .link a{
+            color: rgb(49, 150, 168);
+        }
+
+        
+
+    </style>
+</head>
+
 <body>
-    <div id="flash-message" class="alert alert-info" style="display:none"></div>
+    <div class="container">
+        {% if profile_details %}
+            {% for profile in profile_details %}
+                <div class="box" style="grid-column: span 4">
+                    <button class="upload-circle" id="uploadBtn">
+                        <label for="profilePicInput">
+                            <img id="profilePic" src="../static/Images/camera_2956744.png" alt="Upload Image">
+                        </label>
+                    </button>
+                    <input type="file" id="profilePicInput" style="display: none;">
+                    <div class="field">
+                        <label for="name"><img src="../static/Images/user_9131549.png" alt="" class="icon">Name:</label>
+                        <div id="name" class="box-input">{{ profile.full_name }}</div>
+                    </div>
+                    <div class="field">
+                        <label for="job_title"><img src="../static/Images/briefcase_2313642.png" alt="" class="icon">Job Title:</label>
+                        <div id="job_title" class="box-input">{{ profile.current_position }}, {{ profile.current_company }}</div>
+                    </div>
+                    <div class="field">
+                        <label for="job_location"><img src="../static/Images/earth_44386.png" alt="" class="icon">Job Location:</label>
+                        <div id="job_location" class="box-input">{{profile.current_city }}, {{ profile.current_country }}</div>
+                    </div>
+                </div>
+                <div class="box" style="grid-column: span 8;">
+                    <div class="heading">Personal & Educational Details</div>
+                    <div class="details">
+                        <div class="col-6">
+                            <div class="field">
+                                <label for="email">Email ID:</label>
+                                <div id="email" class="box-input">{{ profile.email_address }}</div>
+                            </div>
+                            <div class="field">
+                                <label for="education">Current Highest Education:</label>
+                                <div id="education" class="box-input">{{ profile.education_position }}</div>
+                            </div>
+                            <div class="field">
+                                <label for="start_year">Start Year:</label>
+                                <div id="start_year" class="box-input">{{ profile.education_start_year }}</div>
+                            </div>
+                            <div class="field">
+                                <label for="institution_name">Institution Name:</label>
+                                <div id="institution_name" class="box-input">{{ profile.inst_name }}</div>
+                            </div>
+                        </div>
 
-    <div class="position-relative overflow-hidden p-5 p-md-7 m-md-3 text-center row" style="background-color:rgb(16, 98, 112); color:white">
+                        <div class="col-6">
+                            <div class="field">
+                                <label for="dob">Date of Birth:</label>
+                                <div id="dob" class="box-input">{{ profile.year_of_birth }}</div>
+                            </div>
+                            <div class="field">
+                                <label for="department">Course Department:</label>
+                                <div id="department" class="box-input">{{ profile.inst_department }}</div>
+                            </div>
+                            <div class="field">
+                                <label for="end_year">End Year:</label>
+                                <div id="end_year" class="box-input">{{ profile.education_end_year }}</div>
+                            </div>
+                            <div class="field">
+                                <label for="institution_country">Institution Country:</label>
+                                <div id="institution_country" class="box-input">{{ profile.inst_country }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box professional-box" style="grid-column: span 7;">
+                    <div class="heading">Professional Links</div>
+                    <div class="details">
+                        <div class="col-6">
+                            <div class="field">
+                                <label for="portfolio">PORTFOLIO:</label>
+                                <div id="portfolio" class="box-input link"><a href="{{ profile.homepage_url }}" target="_blank">{{ profile.homepage_url }}</a></div>
+                            </div>
+                            <div class="field">
+                                <label for="google_scholar">GOOGLE SCHOLAR:</label>
+                                <div id="google_scholar" class="box-input link"><a href="{{ profile.google_scholar_url }}" target="_blank">{{ profile.google_scholar_url }}</a></div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field">
+                                <label for="orcid">ORCID:</label>
+                                <div id="orcid" class="box-input link"><a href="{{ profile.orcid_url }}" target="_blank">{{ profile.orcid_url }}</a></div>
+                            </div>
+                            <div class="field">
+                                <label for="others">OTHERS:</label>
+                                <div id="others" class="box-input link"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box work-status-box" style="grid-column: span 5;">
+                    <div class="heading">Work Status</div>
+                    <div class="work-status">
+                        <div class="status-box-container">
 
-        <div class="col-md-4">
-            <div class="profile">
-                <div class="card" style="color:black">
-                    {% if profile_details %}
-                        {% for profile in profile_details %}
-                            <div class="row">                           <!--A unique row consists of both the columns-->
-                                <div class="col-md-8">                  <!--Column for the card content-->
-                                    <div class="card-body text-center">
-                                        <p style="display:inline-block;">
-                                            <img class="mb-4 rounded-circle" src="../static/Images/user_9131549.png" width="40" height="40" alt="">
-                                            {{ profile.full_name }}
-                                        </p>
-                                        <p style="display:inline-block;">
-                                            <img class="mb-4 rounded-circle" src="../static/Images/briefcase_2313642.png" width="40" height="40" alt="">
-                                            {{ profile.current_position }}, {{ profile.current_company }}
-                                        </p>
-                                        <p style="display:inline-block;">
-                                            <img class="mb-4 rounded-circle" src="../static/Images/earth_44386.png" width="40" height="40" alt="">
-                                            {{profile.current_city }}, {{ profile.current_country }}
-                                        </p>
-                                       
-                                    </div>
+                            <div class="status-box pending">PENDING
+                                <div class="box-value">
+                                    2
                                 </div>
                             </div>
-                        {% endfor %}
-                    {% else %}
-                        <h5>Something is Wrong.</h5>
-                    {% endif %}    
-                </div>  
-            </div>        
-        </div>
-    
-        <div class="product-device box-shadow d-none d-md-block"></div>
-        <div class="product-device product-device-2 box-shadow d-none d-md-block"></div>
+                            <div class="status-box completed">COMPLETED
+                                <div class="box-value">
+                                    5
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+                <h5>Something is Wrong.</h5>
+        {% endif %}
     </div>
+
+    <script>
+        // JavaScript to handle file input button click
+        const uploadBtn = document.getElementById('uploadBtn');
+        const profilePicInput = document.getElementById('profilePicInput');
+        const profilePic = document.getElementById('profilePic')
+
+        uploadBtn.addEventListener('click', function() {
+            profilePicInput.click();
+        });
+
+        // Handle file input change event
+        profilePicInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    // Set the uploaded image as the source of the profile picture
+                    profilePic.src = e.target.result;
+                };
+
+                // Read the uploaded image file as a data URL
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 </body>
 {%endblock %}

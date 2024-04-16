@@ -163,11 +163,9 @@
             {% for profile in profile_details %}
                 <div class="box" style="grid-column: span 4">
                     <button class="upload-circle" id="uploadBtn">
-                        <label for="profilePicInput">
-                            <img id="profilePic" src="../static/Images/camera_2956744.png" alt="Upload Image">
-                        </label>
+                        <input id="profilePicInput" type="file" style="display: none;">
+                        <img id="profilePic" src="../static/Images/camera_2956744.png" alt="Upload Image">
                     </button>
-                    <input type="file" id="profilePicInput" style="display: none;">
                     <div class="field">
                         <label for="name"><img src="../static/Images/user_9131549.png" alt="" class="icon">Name:</label>
                         <div id="name" class="box-input">{{ profile.full_name }}</div>
@@ -277,7 +275,13 @@
         // JavaScript to handle file input button click
         const uploadBtn = document.getElementById('uploadBtn');
         const profilePicInput = document.getElementById('profilePicInput');
-        const profilePic = document.getElementById('profilePic')
+        const profilePic = document.getElementById('profilePic');
+
+        // Check if there's a previously uploaded image in local storage
+        const storedImage = localStorage.getItem('profilePic');
+        if (storedImage) {
+            profilePic.src = storedImage;
+        }
 
         uploadBtn.addEventListener('click', function() {
             profilePicInput.click();
@@ -293,6 +297,9 @@
                 reader.onload = function(e) {
                     // Set the uploaded image as the source of the profile picture
                     profilePic.src = e.target.result;
+
+                    // Store the uploaded image in local storage
+                    localStorage.setItem('profilePic', e.target.result);
                 };
 
                 // Read the uploaded image file as a data URL

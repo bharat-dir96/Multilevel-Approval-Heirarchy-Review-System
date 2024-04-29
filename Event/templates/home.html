@@ -13,4 +13,23 @@
         <div class="product-device box-shadow d-none d-md-block"></div>
         <div class="product-device product-device-2 box-shadow d-none d-md-block"></div>
     </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <h2 style="margin-top: 30px;">Login</h2>
+                <p>Already have an account? Login here.</p>
+                <a class="btn btn-primary btn-lg btn-block" href="{{ url_for('login_page') }}">Login</a>
+            </div>
+            <div class="col-md-4 mb-4">
+                <h2 style="margin-top: 30px;">Register</h2>
+                <p>New user? Register now to create an account?.</p>
+                <a class="btn btn-primary btn-lg btn-block" href="{{ url_for('register_page') }}">Register</a>
+            </div>
+            <div class="col-md-4 mb-4">
+                <h2 style="margin-top: 30px;">Admin</h2>
+                <p>Click here for admin login</p>
+                <a class="btn btn-primary btn-lg btn-block" href="{{ url_for('login_page') }}">Admin</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}

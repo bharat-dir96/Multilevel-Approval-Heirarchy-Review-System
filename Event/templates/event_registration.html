@@ -10,29 +10,124 @@
 
         {% if event %}
 
-            <h1 class="display-4 font-weight-normal">{{ event.title }}</h1>
-            <br>
-            <h4>{{ event.acronym }}</h4>
-            <br>
-            <h5>
-            <span class="mr-4">Deadline:{{ event.last_day.strftime('%d/%m/%Y') }}</span>
-            <span class="mr-4"><a href="{{ event.web_page_url }}" class="text-decoration-none text-light">{{ event.web_page_url }}</a></span>
-            <span>{{ event.venue }},{{ event.city }}</span>
-            </h5>
-            <br>
-            <p>{{ event.other_info }}</p>
-            <br><br><br>
-            <form method="POST" enctype='multipart/form-data'>
+            <h1 class="display-4 font-weight-bold">{{ event.title }}</h1>
+            <h2 class="font-weight-normal mb-4">{{ event.acronym }}</h2>
+            <p class="lead mb-4">
+                <span class="mr-4" style="color: black;"><strong>Deadline:</strong> <span>{{ event.last_day.strftime('%d/%m/%Y') }}</span></span>
+                <span class="mr-4" style="color: black;"><strong>Webpage URL:</strong> <a href="{{ event.web_page_url }}" class="text-decoration-none text-light">{{ event.web_page_url }}</a></span>
+                <span>
+                    <span class="mr-4" style="color: black;"><strong class="location-heading">Location:</strong></span>
+                    {{ event.venue }}, {{ event.city }}
+                </span>                
+            </p>
+            <p class="mb-5">{{ event.other_info }}</p>
+
+            <form id="uploadForm" method="POST" enctype='multipart/form-data' class="d-flex flex-column align-items-center">
                 {{ form.hidden_tag() }}  
-                {{ form.document_file() }}
-                {{ form.submit() }}
+                <div class="d-flex flex-column align-items-center mb-2">
+                    <label for="document_file" id="uploadLabel" class="btn btn-primary btn-animation">Choose File</label>
+                    <input type="file" name="document_file" id="document_file" class="d-none">
+                </div>
+                <span class="d-block mb-2" id="fileNameWrapper"><span id="fileName"></span></span>
+                <button type="submit" class="btn btn-success d-none upload-animation" id="uploadButton">Upload</button>
             </form>
         {% else %}
-            <p>No detials! This event is ended.</p>
+            <p>No details! This event has ended.</p>
         {% endif %}
     </div>
 
 </body>
 
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const uploadForm = document.getElementById('uploadForm');
+        const uploadLabel = document.getElementById('uploadLabel');
+        const fileName = document.getElementById('fileName');
+        const fileNameWrapper = document.getElementById('fileNameWrapper');
+        const uploadButton = document.getElementById('uploadButton');
+        const spinner = document.createElement('div');
+        spinner.classList.add('spinner-border', 'text-light');
+        spinner.setAttribute('role', 'status');
+        spinner.innerHTML = '<span class="visually-hidden">Loading...</span>';
+
+        uploadForm.addEventListener('change', function() {
+            const file = document.getElementById('document_file').files[0];
+            fileName.textContent = 'Selected File: ' + file.name;
+            fileNameWrapper.classList.remove('d-none'); 
+            uploadButton.classList.remove('d-none');
+        });
+
+        uploadForm.addEventListener('submit', function() {
+            uploadButton.innerHTML = '';
+            uploadButton.appendChild(spinner);
+        });
+
+        uploadForm.addEventListener('submit', function() {
+            setTimeout(function() {
+                alert('Document uploaded successfully!');
+                fileName.textContent = '';
+                fileNameWrapper.classList.add('d-none'); 
+                uploadButton.innerHTML = 'Upload';
+                uploadButton.classList.add('d-none');
+            }, 4000); 
+        });
+    });
+</script>
+
+<style>
+    .btn-animation {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn-animation:hover {
+        transform: scale(1.05);
+    }
+
+    
+    h1, h2, h3, h4, h5, h6 {
+        color: #fff;
+        font-weight: bold;
+    }
+
+    p, span {
+        color: #fff;
+        font-size: 18px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    
+    .webpage-url {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    
+    .location {
+        color: #fff;
+    }
+
+    
+    #fileNameWrapper {
+        margin-top: 10px;
+        margin-left: 10px; 
+    }
+
+    
+    .upload-animation {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .upload-animation:hover {
+        transform: scale(1.05);
+    }
+    .location-heading {
+        color: black;
+    }
+    
+</style>
 
 {% endblock %}

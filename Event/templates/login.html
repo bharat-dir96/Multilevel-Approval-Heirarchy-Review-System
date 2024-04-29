@@ -25,22 +25,39 @@
 
             <br>
 
-            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
+            {{ form.submit(class="btn btn-lg btn-block btn-primary animated-button") }}
 
             <br><br>
 
             <div class="container text-center">
-                <a href="{{ url_for('google_login') }}" class="btn btn-primary">Sign Up with Google</a>
+                <a href="{{ url_for('google_login') }}" class="btn btn-lg btn-block animated-button custom-color">Sign Up with Google</a>
 
                 <br><br>
 
                 <div class="checkbox nb-3">
                     <h6>Do not have an account?</h6>
-                    <a class="btn btn-sm btn-secondary" href="{{ url_for('register_page') }}" >Register</a>
+                    <a class="btn btn-sm btn-secondary animated-button" href="{{ url_for('register_page') }}" >Register</a>
                 </div>
             </div>
             <br><br>
         </form>
     </div>
 </body>
+
+<style>
+    .animated-button{
+        transition: all 0.3s ease-in-out;
+    }
+
+    .animated-button:hover{
+        transform: scale(1.1);
+    }
+
+    .custom-color{
+        background-color: rgb(49,150,168);
+        border-color: rgb(49,150,168);
+    }
+    
+</style>
+
 {%endblock %}

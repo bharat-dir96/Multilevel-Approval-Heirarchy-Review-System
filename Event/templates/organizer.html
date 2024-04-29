@@ -6,46 +6,47 @@
 <body>
     <div id="flash-message" class="alert alert-info" style="display:none"></div>
 
-    <div class="position-relative overflow-hidden p-5 p-md-7 m-md-3 text-center row" style="background-color:rgb(16, 98, 112); color:white">
-        <div class="col-md-10">
-            <br>
-            <h3 class="text-left">Your Events - </h3>
-            <br>
-
-            <div class="event-details">
-                {% if organizer_events %}
-                    {% for event in organizer_events %}
-                        <div class="card text-left" style="color:black">
-                            <div class="row">                           <!--A unique row consists of both the columns-->
-                                <div class="col-md-10">                  <!--Column for the card content-->
-                                    <div class="card-body">
-                                        <h2 class="card-title">{{ event.title }}</h2>
-                                        <a href="{{ event.web_page_url }}" class="card-text">{{ event.web_page_url }}</a>
-                                        <br>
-                                        <p class="card-text">Deadline: {{ event.last_day.strftime('%d/%m/%Y') }}</p>
-                                        <a href="{{ url_for('track_events') }}" class="btn btn-primary">Track Event</a>
+    <div class="container-fluid py-5" style="background-color: rgb(16, 98, 112);">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-8 text-center">
+                <h1 class="text-white">Your Events</h1>
+                <div class="container mt-5">
+                    <div class="row">
+                        {% if organizer_events %}
+                            {% for event in organizer_events %}
+                                <div class="col-md-6 mb-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h2 class="card-title">{{ event.title }}</h2>
+                                            <p class="card-text"><strong>Deadline:</strong> {{ event.last_day.strftime('%d/%m/%Y') }}</p>
+                                            <p class="card-text"><strong>Webpage URL:</strong> <a href="{{ event.web_page_url }}">{{ event.web_page_url }}</a></p>
+                                            <a href="#" class="btn btn-primary scale-transition">Track Event</a>
+                                        </div>
                                     </div>
                                 </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="col-md-12">
+                                <h5 class="text-center text-black">You have not created any events yet.</h5>
                             </div>
-                        </div>
-                        <br><br>
-                    {% endfor %}
-                {% else %}
-                    <h5>You have not created any event yet.</h5>
-                {% endif %}    
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 text-center">
+                <h2 class="text-white">Create a New Event</h2>
+                <p class="lead text-white">Start organizing by creating a new event:</p>
+                <a class="btn btn-lg btn-outline-light scale-transition" href="{{ url_for('submit_event_request') }}">Create New</a>
             </div>
         </div>
+    </div>
 
-        <div class="col-md-2">
-            <div class="event-details text-left">
-                <h3>Create a new event:</h3>
-                <a class="btn btn-lg btn-primary mt-3" href="{{ url_for('submit_event_request') }}">Create New</a>
-            </div>        
-        </div>
+
+
+ 
     
         <div class="product-device box-shadow d-none d-md-block"></div>
         <div class="product-device product-device-2 box-shadow d-none d-md-block"></div>
-    </div>
 
 
     <script>
@@ -54,4 +55,16 @@
     </script>
     
 </body>
+
+<style>
+    /* CSS animations */
+    .scale-transition {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .scale-transition:hover {
+        transform: scale(1.1);
+    }
+</style>
+
 {% endblock %}

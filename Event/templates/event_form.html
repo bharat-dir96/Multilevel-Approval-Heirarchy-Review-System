@@ -5,82 +5,106 @@
 {% block content %}
 <body>
 
-    <div class="container w-25 float-left m-4 p-3">
-        <h4>InReview New Event Request</h4>
-        <p>Please fill out the form and submit a send reuqest.</p>
-        <form class="m-6" method="POST" style="color:black" action="{{ url_for('submit_event_request')}}">
-            {{ form.csrf_token }}
-            {{ form.hidden_tag() }}
+    <!-- New Event Form Section -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="container w-100 mt-4 p-5 bg-light rounded shadow">
+                    <h2 class="mb-4 custom-color">Submit New Event Request</h2>
+                    <h6 class="text-secondary">Please fill out the form and submit your request.</h6>
 
-            {{ form.category.label() }}
-            {{ form.category(class="form-control", placeholder="") }}
+                    <hr>
+                    <br>
+                    <form method="POST" style="color:black" action="{{ url_for('submit_event_request')}}">
+                        {{ form.csrf_token }}
+                        {{ form.hidden_tag() }}
 
-            <br>
+                        <!-- Category -->
+                        {{ form.category.label() }}
+                        {{ form.category(class="form-control", placeholder="Enter event category") }}
+                        <hr>
 
-            {{ form.title.label() }}
-            {{ form.title(class="form-control", placeholder="") }}
+                        <!-- Title -->
+                        {{ form.title.label() }}
+                        {{ form.title(class="form-control", placeholder="Enter event title") }}
 
-            {{ form.acronym.label() }}
-            {{ form.acronym(class="form-control", placeholder="") }}
+                        <!-- Acronym -->
+                        {{ form.acronym.label() }}
+                        {{ form.acronym(class="form-control", placeholder="Enter event acronym") }}
 
-            <br>
+                        <hr>
 
-            {{ form.web_page_url.label() }}
-            {{ form.web_page_url(class="form-control", placeholder="") }}
+                        <!-- Web Page URL -->
+                        {{ form.web_page_url.label() }}
+                        {{ form.web_page_url(class="form-control", placeholder="Enter event webpage URL") }}
 
-            {{ form.venue.label() }}
-            {{ form.venue(class="form-control", placeholder="") }}
+                        <!-- Venue -->
+                        {{ form.venue.label() }}
+                        {{ form.venue(class="form-control", placeholder="Enter event venue") }}
 
-            {{ form.city.label() }}
-            {{ form.city(class="form-control", placeholder="") }}
+                        <!-- City -->
+                        {{ form.city.label() }}
+                        {{ form.city(class="form-control", placeholder="Enter event city") }}
 
-            {{ form.country.label() }}
-            {{ form.country(class="form-control", placeholder="") }}
+                        <!-- Country -->
+                        {{ form.country.label() }}
+                        {{ form.country(class="form-control", placeholder="Enter event country") }}
 
-            <br>
+                        <hr>
 
-            {{ form.first_day.label() }}
-            {{ form.first_day(class="form-control", placeholder="") }}
+                        <!-- First Day -->
+                        {{ form.first_day.label() }}
+                        {{ form.first_day(class="form-control", placeholder="Enter event first day") }}
 
-            {{ form.last_day.label() }}
-            {{ form.last_day(class="form-control", placeholder="") }}
+                        <!-- Last Day -->
+                        {{ form.last_day.label() }}
+                        {{ form.last_day(class="form-control", placeholder="Enter event last day") }}
 
-            <br>
+                        <hr>
 
-            {{ form.primary_area.label() }}
-            {{ form.primary_area(class="form-control", placeholder="") }}
+                        <!-- Primary Area -->
+                        {{ form.primary_area.label() }}
+                        {{ form.primary_area(class="form-control", placeholder="Enter event primary area") }}
 
-            {{ form.secondary_area.label() }}
-            {{ form.secondary_area(class="form-control", placeholder="") }}
+                        <!-- Secondary Area -->
+                        {{ form.secondary_area.label() }}
+                        {{ form.secondary_area(class="form-control", placeholder="Enter event secondary area") }}
 
-            {{ form.area_notes.label() }}
-            {{ form.area_notes(class="form-control", placeholder="") }}
+                        <!-- Area Notes -->
+                        {{ form.area_notes.label() }}
+                        {{ form.area_notes(class="form-control", placeholder="Enter area notes") }}
 
-            <br>
+                        <hr>
 
-            {{ form.organizer_name.label() }}
-            {{ form.organizer_name(class="form-control", placeholder="") }}
+                        <!-- Organizer Name -->
+                        {{ form.organizer_name.label() }}
+                        {{ form.organizer_name(class="form-control", placeholder="Enter organizer name") }}
 
-            {{ form.organizer_email_address.label() }}
-            {{ form.organizer_email_address(class="form-control", placeholder="")}}
+                        <!-- Organizer Email Address -->
+                        {{ form.organizer_email_address.label() }}
+                        {{ form.organizer_email_address(class="form-control", placeholder="Enter organizer email address") }}
 
-            {{ form.organizer_web_page.label() }}
-            {{ form.organizer_web_page(class="form-control", placeholder="") }}
+                        <!-- Organizer Web Page -->
+                        {{ form.organizer_web_page.label() }}
+                        {{ form.organizer_web_page(class="form-control", placeholder="Enter organizer web page") }}
 
-            {{ form.phone_no.label() }}
-            {{ form.phone_no(class="form-control", placeholder="") }}
+                        <!-- Phone No -->
+                        {{ form.phone_no.label() }}
+                        {{ form.phone_no(class="form-control", placeholder="Enter phone number") }}
 
-            <br>
+                        <hr>
 
-            {{ form.other_info.label() }}
-            {{ form.other_info(class="form-control", placeholder="") }}
+                        <!-- Other Info -->
+                        {{ form.other_info.label() }}
+                        {{ form.other_info(class="form-control", placeholder="Enter other info") }}
 
-            <br><br>
+                        <br><br>
+                        {{ form.submit(class="btn btn-lg btn-block btn-primary animated-button") }}
 
-            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
-        
-        </form>
-
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -89,4 +113,19 @@
     </script>
     
 </body>
+
+<style>
+    .animated-button {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .animated-button:hover {
+        transform: scale(1.1);
+    }
+
+    .custom-color{
+        color: rgb(49,150,168);
+    }
+</style>
+
 {% endblock %}

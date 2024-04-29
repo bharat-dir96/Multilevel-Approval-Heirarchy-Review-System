@@ -5,103 +5,120 @@
 {% block content %}
 <body>
 
-    <div class="container w-25 float-left m-4 p-3">
-        <h2>Reviewer Registration</h2>
-        <h6>Please fill out the form and register yourself.</h6>
-        <form class="m-6" method="POST" style="color:black" action="{{ url_for('reviewer_register')}}">
-            {{ form.csrf_token }}
-            {{ form.hidden_tag() }}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-7">
+                <div class="container w-100 mt-4 p-5 bg-light rounded shadow">
+                    <h2 class="mb-4 custom-color">Reviewer Registration</h2>
+                    <h6 class="text-secondary">Please fill out the form and register yourself.</h6>
 
-            {{ form.full_name.label() }}
-            {{ form.full_name(class="form-control", placeholder="Enter your name here") }}
-
-            <br>
-
-            {{ form.gender.label() }}
-            {{ form.gender(class="form-control", placeholder="") }}
-
-            <br>
-
-            {{ form.year_of_birth.label() }}
-            {{ form.year_of_birth(class="form-control", placeholder="Enter your year of birth") }}
-
-            <br>
-
-            {{ form.email_address.label() }}
-            {{ form.email_address(class="form-control", placeholder="Enter only valid email address") }}
-
-            <br>
-
-            {{ form.homepage_url.label() }}
-            {{ form.homepage_url(class="form-control", placeholder="") }}
-
-            {{ form.google_scholar_url.label() }}
-            {{ form.google_scholar_url(class="form-control", placeholder="") }}
-
-            {{ form.orcid_url.label() }}
-            {{ form.orcid_url(class="form-control", placeholder="") }}
-
-            <br>
-
-            {{ form.education_position.label() }}
-            {{ form.education_position(class="form-control", placeholder="Choose or type a position") }}
-
-            {{ form.education_start_year.label() }}
-            {{ form.education_start_year(class="form-control", placeholder="start year") }}
-
-            {{ form.education_end_year.label() }}
-            {{ form.education_end_year(class="form-control", placeholder="end year") }}
-
-            {{ form.inst_domain.label() }}
-            {{ form.inst_domain(class="form-control", placeholder="Choose or type an institution")}}
-
-            {{ form.inst_name.label() }}
-            {{ form.inst_name(class="form-control", placeholder="Institution Name")}}
-
-            {{ form.inst_country.label() }}
-            {{ form.inst_country(class="form-control", placeholder="Institution Country/Religion")}}
-
-            {{ form.inst_state.label() }}
-            {{ form.inst_state(class="form-control", placeholder="Institution State/Province")}}
-
-            {{ form.inst_city.label() }}
-            {{ form.inst_city(class="form-control", placeholder="Institution City")}}
-
-            {{ form.inst_department.label() }}
-            {{ form.inst_department(class="form-control", placeholder="Department of Institution")}}
-
-            <br>    
+                    <hr>
+                    <br>
+                    <form class="m-6" method="POST" style="color:black" action="{{ url_for('reviewer_register')}}">
+                        {{ form.csrf_token }}
+                        {{ form.hidden_tag() }}
             
-            {{ form.current_position.label() }}
-            {{ form.current_position(class="form-control", placeholder="Enter your current work position")}}
-
-            {{ form.current_company.label() }}
-            {{ form.current_company(class="form-control", placeholder="Enter your current company name") }}
-
-            {{ form.current_start_year.label() }}
-            {{ form.current_start_year(class="form-control", placeholder="start year")}}
-
-            {{ form.current_end_year.label() }}
-            {{ form.current_end_year(class="form-control", placeholder="end year")}}
-
-            {{ form.current_city.label() }}
-            {{ form.current_city(class="form-control", placeholder="Company City")}}
-
-            {{ form.current_country.label() }}
-            {{ form.current_country(class="form-control", placeholder="Company State")}}
-
-            <br>
-
-            {{ form.area_of_interest.label() }}
-            {{ form.area_of_interest(class="form-control", placeholder="Area of Interests")}}
-    
-            <br><br>
-
-            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
-        
-        </form>
-
+                        {{ form.full_name.label() }}
+                        {{ form.full_name(class="form-control", placeholder="Enter your name here") }}
+                        
+                        {{ form.gender.label() }}
+                        {{ form.gender(class="form-control", placeholder="") }}
+            
+                        {{ form.year_of_birth.label() }}
+                        {{ form.year_of_birth(class="form-control", placeholder="Enter your year of birth") }}
+            
+                        {{ form.email_address.label() }}
+                        {{ form.email_address(class="form-control", placeholder="Enter only valid email address") }}
+            
+                        <hr>
+            
+                        {{ form.homepage_url.label() }}
+                        {{ form.homepage_url(class="form-control", placeholder="") }}
+            
+                        {{ form.google_scholar_url.label() }}
+                        {{ form.google_scholar_url(class="form-control", placeholder="") }}
+            
+                        {{ form.orcid_url.label() }}
+                        {{ form.orcid_url(class="form-control", placeholder="") }}
+            
+                        <hr>
+            
+                        {{ form.education_position.label() }}
+                        {{ form.education_position(class="form-control", placeholder="Choose or type a position") }}
+            
+                        {{ form.education_start_year.label() }}
+                        {{ form.education_start_year(class="form-control", placeholder="start year") }}
+            
+                        {{ form.education_end_year.label() }}
+                        {{ form.education_end_year(class="form-control", placeholder="end year") }}
+            
+                        {{ form.inst_domain.label() }}
+                        {{ form.inst_domain(class="form-control", placeholder="Choose or type an institution") }}
+            
+                        {{ form.inst_name.label() }}
+                        {{ form.inst_name(class="form-control", placeholder="Institution Name")}}
+            
+                        {{ form.inst_country.label() }}
+                        {{ form.inst_country(class="form-control", placeholder="Institution Country/Religion")}}
+            
+                        {{ form.inst_state.label() }}
+                        {{ form.inst_state(class="form-control", placeholder="Institution State/Province")}}
+            
+                        {{ form.inst_city.label() }}
+                        {{ form.inst_city(class="form-control", placeholder="Institution City")}}
+            
+                        {{ form.inst_department.label() }}
+                        {{ form.inst_department(class="form-control", placeholder="Department of Institution")}}
+            
+                        <hr>    
+                        
+                        {{ form.current_position.label() }}
+                        {{ form.current_position(class="form-control", placeholder="Enter your current work position")}}
+            
+                        {{ form.current_company.label() }}
+                        {{ form.current_company(class="form-control", placeholder="Enter your current company name") }}
+            
+                        {{ form.current_start_year.label() }}
+                        {{ form.current_start_year(class="form-control", placeholder="start year")}}
+            
+                        {{ form.current_end_year.label() }}
+                        {{ form.current_end_year(class="form-control", placeholder="end year")}}
+            
+                        {{ form.current_city.label() }}
+                        {{ form.current_city(class="form-control", placeholder="Company City")}}
+            
+                        {{ form.current_country.label() }}
+                        {{ form.current_country(class="form-control", placeholder="Company State")}}
+            
+                        <hr>
+            
+                        {{ form.area_of_interest.label() }}
+                        {{ form.area_of_interest(class="form-control", placeholder="Area of Interests")}}
+                
+                        <br><br>
+            
+                        {{ form.submit(class="btn btn-lg btn-block btn-primary animated-button") }}
+                    
+                    </form>
+                </div>
+            </div>
+        </div>  
     </div>
 
 </body>
+
+<style>
+    .animated-button {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .animated-button:hover {
+        transform: scale(1.1);
+    }
+
+    .custom-color{
+        color: rgb(49,150,168);
+    }
+</style>
+
 {% endblock %}

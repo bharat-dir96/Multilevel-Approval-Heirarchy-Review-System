@@ -23,7 +23,7 @@
                             </div>
 
                             <div class="row">                           <!--A unique row consists of both the columns-->
-                                <div class="col-md-2">                  <!--Column for the image-->
+                                <div class="col-md-2 animated-image">                  <!--Column for the image-->
                                     <img src="../static/Images/Dropbox AI hackathon.png" alt="Hackathon Image" class="card-image img-fluid">
                                 </div>
                                 <div class="col-md-8">                  <!--Column for the card content-->
@@ -31,7 +31,7 @@
                                         <h2 class="card-title">{{ event.title }}</h2>
                                         <h6 class="card-text">{{ event.acronym }}</h6>
                                         <p class="card-text">Deadline: {{ event.last_day.strftime('%d/%m/%Y') }}</p>
-                                        <a href="{{ url_for('event_registration', event_id=event.id) }}" class="btn btn-primary">Regsiter Here</a>
+                                        <a href="{{ url_for('event_registration', event_id=event.id) }}" class="btn btn-primary animated-button">Regsiter Here</a>
                                     </div>
                                 </div>
                             </div>
@@ -60,4 +60,23 @@
     </script> -->
 
 </body>
+
+<style>
+    .animated-button {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .animated-button:hover {
+        transform: scale(1.1);
+    }
+
+    .animated-image {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .animated-image:hover img {
+        transform: scale(1.1);
+    }
+</style>
+
 {% endblock %}

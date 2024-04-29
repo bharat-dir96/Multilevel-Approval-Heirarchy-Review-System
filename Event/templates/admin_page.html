@@ -2,60 +2,66 @@
 {% block title %}
     Admin Page
 {% endblock %}
+
 {% block content %}
 <body>  
+    <style>
+        .zoom-btn:hover {
+            transition: transform 0.3s ease-in-out;
+            transform: scale(1.1);
+        }
+    </style>
+
     <div class="position-relative overflow-hidden p-5 p-md-7 m-md-3 text-center" style="background-color:rgb(16, 98, 112); color:white">
-        <div class="col-md-7 p-lg-1 mx-auto my-1">
-            <h1 class="display-4 font-weight-normal">Congratulations!</h1>
-            <p class="lead font-weight-normal">You are now logged in as admin.</p> 
-        </div>
-
-        <form method="POST" class="form-signin" style="color:white">
-            {{ form.hidden_tag() }}
-            <br><br>
-            <h1 class="h3 nb-3 font-weight-normal">
-                Enter below the number of links to generate
-            </h1>
-            <br>
-
-            {{ form.number.label() }}
-            {{ form.number(class="form-control", placeholder="") }}
-
-            <br>
-
-            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
-            
-            <br><br>
-            <ul>
-                {% if Invite_links %}
-                    {% for link_group in Invite_links %}
-                        <li>
-                            <input type="text" value="{{ link_group }}" size="50" id="myInput{{ loop.index }}">
-                            <button id="copyButton{{ loop.index }}" onclick="copyText('myInput{{ loop.index }}')">Copy link</button>
-                        </li>
-                    {% endfor %}
-                {% endif %}
-            </ul>
-
-        </form>
-
         <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h2>Event Requests:</h2>
-                    <a class="btn btn-sm btn-primary mt-3" href="{{ url_for('admin_event_requests') }}">Go to event requests</a>
-                </div>
-                <div class="col-md-6 text-md-right">
-                    <h2>Reviewers Requests:</h2>
-                    <a class="btn btn-sm btn-primary mt-3" href="{{ url_for('admin_reviewer_requests') }}">Go to reviewers requests</a>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <h1 class="display-4 font-weight-normal mb-4">Congratulations!</h1>
+                    <p class="lead font-weight-normal mb-5">You are now logged in as admin.</p>
+                    <form method="POST" class="form-signin" style="color:white">
+                        {{ form.hidden_tag() }}
+                        <div class="form-group">
+                            {{ form.number.label(class="sr-only") }}
+                            {{ form.number(class="form-control", placeholder="Enter number of links", required=True) }}
+                        </div>
+                        {{ form.submit(class="btn btn-lg btn-primary btn-block mt-4 zoom-btn") }}
+                    </form>
                 </div>
             </div>
         </div>
         
+        <!-- Display generated links -->
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <h2 class="mb-3">Generated Invite Links</h2>
+                    {% if Invite_links %}
+                        <div class="list-group">
+                            {% for invite_link in Invite_links %}
+                                <a href="{{ invite_link }}" class="list-group-item list-group-item-action">{{ invite_link }}</a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>No invite links generated yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
 
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <h2 class="mb-3">Event Requests</h2>
+                    <a class="btn btn-lg btn-primary d-block " href="{{ url_for('admin_event_requests') }}">Go to event requests</a>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <h2 class="mb-3">Reviewers Requests</h2>
+                    <a class="btn btn-lg btn-primary d-block" href="{{ url_for('admin_reviewer_requests') }}">Go to reviewers requests</a>
+                </div>
+            </div>
+        </div>
         <div class="product-device box-shadow d-none d-md-block"></div>
         <div class="product-device product-device-2 box-shadow d-none d-md-block"></div>
     </div>
 </body>
-
 {% endblock %}

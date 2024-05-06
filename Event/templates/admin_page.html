@@ -36,13 +36,12 @@
                 <div class="col-md-8">
                     <h2 class="mb-3">Generated Invite Links</h2>
                     {% if Invite_links %}
-                        <div class="list-group">
-                            {% for invite_link in Invite_links %}
-                                <a href="{{ invite_link }}" class="list-group-item list-group-item-action">{{ invite_link }}</a>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <p>No invite links generated yet.</p>
+                        {% for link_group in Invite_links %}
+                            <li>
+                                <input type="text" value="{{ link_group }}" size="50" id="myInput{{ loop.index }}">
+                                <button id="copyButton{{ loop.index }}" onclick="copyText('myInput{{ loop.index }}')">Copy link</button>
+                            </li>
+                        {% endfor %}
                     {% endif %}
                 </div>
             </div>

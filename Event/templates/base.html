@@ -23,6 +23,10 @@
             nav.navbar{
                 margin-top: 0;
             }
+            .highlighted:hover{
+                transform: scale(1.1);
+                transition: all 0.3s ease-in-out;
+            }
         </style>
     </head>
     <body>
@@ -46,14 +50,18 @@
                             </li>
                         {% elif current_user.role == 'organizer' %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('organizer_page', role=current_user.role) }}">Organizer's Page</a>
+                                <a class="nav-link" href="{{ url_for('organizer_page', role=current_user.role) }}">Organizer's Dashboard</a>
+                            </li>
+                        {% elif current_user.role == 'reviewer' %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('reviewer_dashboard', role=current_user.role) }}">Reviewer's Dashboard</a>
                             </li>
                         {% endif %}
                         <li class="nav-item">
-                            <a class="nav-link">Welcome, {{ current_user.username}}</a>
+                            <a class="nav-link text-white">Welcome, {{ current_user.username}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('logout_page') }}">Logout</a>
+                            <a class="nav-link highlighted" href="{{ url_for('logout_page') }}">Logout</a>
                         </li>
                     </ul>
                 {% elif google_id %}
@@ -65,7 +73,7 @@
                             <a class="nav-link">{{ Email_id }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('logout_page') }}">Logout</a>
+                            <a class="nav-link highlighted" href="{{ url_for('logout_page') }}">Logout</a>
                         </li>
                     </ul>
                 {% elif admin_username %}
@@ -74,7 +82,7 @@
                             <a class="nav-link">Welcome {{ admin_username }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('logout_page') }}">Logout</a>
+                            <a class="nav-link highlighted" href="{{ url_for('logout_page') }}">Logout</a>
                         </li>
                     </ul>
                 {% else %}

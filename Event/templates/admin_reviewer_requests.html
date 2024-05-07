@@ -13,7 +13,7 @@
                     {% if reviewer_requests %}
                     <div class="table-responsive">
                         <table class="table table-hover">
-                            <thead>
+                            <thead class="thead-dark">
                                 <tr>
                                     <th scope="col">S.No.</th>
                                     <th scope="col">Full Name</th>
@@ -33,7 +33,7 @@
                             </thead>
                             <tbody>
                                 {% for reviewer_request in reviewer_requests %}
-                                <tr>
+                                <tr class="table-info">
                                     <td>{{ loop.index }}</td>
                                     <td>{{ reviewer_request.full_name }}</td>
                                     <td>{{ reviewer_request.year_of_birth }}</td>

@@ -11,7 +11,8 @@
                 <div class="card-body" style="background-color: rgb(161, 217, 240);">
                     <h1 class="card-title text-black mb-4">Admin Events Requests</h1>
                     {% if event_requests %}
-                        <table class="table table-striped table-borderless table-hover">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>S.No.</th>
@@ -58,6 +59,7 @@
                                     {% endfor %}
                             </tbody>
                         </table>
+                    </div>
                     {% else %}
                         <p class="text-center" style="font-size: 1.2rem;">No pending event requests.</p>
                     {% endif %}

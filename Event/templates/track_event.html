@@ -9,19 +9,52 @@
     <div class="position-relative overflow-hidden p-5 p-md-7 m-md-3 text-center row" style="background-color:rgb(16, 98, 112); color:white">
         <div class="col-md-10">
             <br>
-            <h3 class="text-left">Submissions - </h3>
             <br><br>
 
             <div class="card text-left" style="color:black">
-                {% if submission %}
+                {% if event %}
                     <div class="row">                           <!--A unique row consists of both the columns-->
-                        <div class="col-md-10">                  <!--Column for the card content-->
+                        <div class="col-md-12">                  <!--Column for the card content-->
                             <div class="card-body">
-                                <h2 class="card-title">{{ submission.ps_name }}</h2>
-                                <a href="{{ event.web_page_url }}" class="card-text">{{ event.web_page_url }}</a>
+                                <h2 class="card-title">{{ event.title }}</h2>
                                 <br>
-                                <p class="card-text">Deadline: {{ event.last_day.strftime('%d/%m/%Y') }}</p>
-                                <a href="{}" class="btn btn-primary">Track Event</a>
+                                <h6>Web Page -  <a href="{{ event.web_page_url }}" class="card-text">{{ event.web_page_url }}</a></h6>
+                                <h6 class="card-text">Deadline: {{ event.last_day.strftime('%d/%m/%Y') }}</h6>
+                                <br><hr>
+                                <h2 class="text-left" >Submissions - </h2>
+                                {% if submission %}
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>S.No.</th>
+                                                    <th>Participant Name</th>
+                                                    <th>Submission Date & Time</th>
+                                                    <th>Document</th>
+                                                    <th>Status</th>
+                                                    <th>Assigned to</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {% for sub in submission %}
+                                                    <tr class="table-info">
+                                                        <td>{{ loop.index }}</td>
+                                                        <td>{{ sub.ps_name }}</td>
+                                                        <td>{{ sub.sub_datetime}}</td>
+                                                        <td>
+                                                            <a href="{{ url_for('download_file', filename=sub.document_file) }}" target="_blank">{{ sub.document_file}}</a>
+                                                        </td>
+                                                        <td>{{ sub.status }}</td>
+                                                        <td></td>
+                                                    </tr>
+                                                {% endfor %}                     
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    {% else %}
+                                        <h6>No Submissions till now!!</h6>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

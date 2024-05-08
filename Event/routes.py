@@ -1,5 +1,5 @@
 from Event import app
-from flask import render_template, redirect, url_for, flash, request, session, abort
+from flask import render_template, redirect, url_for, flash, request, session, abort, send_from_directory
 from Event.models import User, Event, InviteLink, Reviewer, Submissions, Guest
 from Event.forms import RegisterForm, LoginForm, SubmissionsForm, AdminForm, InviteLinks, EventForm, ReviewerForm, CreateUserForm
 from Event import db, flow, GOOGLE_CLIENT_ID, mail, ALLOWED_EXTENSIONS
@@ -274,6 +274,7 @@ def google_event_page():
     event_approved = Event.query.filter_by(is_approved=True).all()
     return render_template('event_page.html', google_id=session["google_id"], name=session["name"], Email_id=session["Email_id"], event_approved=event_approved)
 
+#Submission Route
 @app.route('/event-registration/<int:event_id>', methods=['GET', 'POST'])           #Separate Event details route
 def event_registration(event_id):
     event = Event.query.get_or_404(event_id)
@@ -293,7 +294,7 @@ def event_registration(event_id):
             submission = Submissions(
                 ps_name=current_user.full_name,
                 ps_email_address=current_user.email_address,
-                document_file=file_path,
+                document_file=filename,
                 user_id=current_user.id,
                 event_id=event_id
             )
@@ -612,7 +613,15 @@ def reviewer_dashboard():
     #     flash('You need to log in to access this page', 'warning')
     #     return redirect(url_for('login_page'))
 
-@app.route('/track-event', methods=['GET','POST'])
-def track_events():
-    submission = Submissions.query.filter(Submissions.event_id == event.event.id)
-    return render_template('track_event.html', submission=submission)
+@app.route('/track-event/<int:event_id>', methods=['GET','POST'])
+def track_events(event_id):
+    event = Event.query.get_or_404(event_id)
+    print(event)
+    print(event.id)
+    submission = Submissions.query.filter(Submissions.event_id==event.id).all()
+    print(submission)
+    return render_template('track_event.html', submission=submission, event=event)
+
+@app.route('/uploads/<path:filename>')
+def download_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'],filename)    

@@ -20,7 +20,7 @@
                                             <h2 class="card-title">{{ event.title }}</h2>
                                             <p class="card-text"><strong>Deadline:</strong> {{ event.last_day.strftime('%d/%m/%Y') }}</p>
                                             <p class="card-text"><strong>Webpage URL:</strong> <a href="{{ event.web_page_url }}">{{ event.web_page_url }}</a></p>
-                                            <a href="#" class="btn btn-primary scale-transition">Track Event</a>
+                                            <a href="{{ url_for('track_events', event_id=event.id) }}" class="btn btn-primary scale-transition">Track Event</a>
                                         </div>
                                     </div>
                                 </div>

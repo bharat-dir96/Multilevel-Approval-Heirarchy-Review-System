@@ -105,7 +105,7 @@ class Reviewer(db.Model):
 class Submissions(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     ps_name = db.Column(db.String(20), nullable=False)
-    ps_email_address = db.Column(db.String(50), unique=True, nullable=False)
+    ps_email_address = db.Column(db.String(50), nullable=False)
     sub_datetime = db.Column(db.DateTime(), default=datetime.utcnow().replace(tzinfo=pytz.UTC).astimezone(pytz.timezone('Asia/Kolkata')), nullable=False)
     document_file = db.Column(db.String(255))
     status = db.Column(db.String(20), default='Submitted')

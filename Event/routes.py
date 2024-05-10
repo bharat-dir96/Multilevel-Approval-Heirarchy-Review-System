@@ -113,7 +113,7 @@ def verify_email():
         flash('Invalid verification token. Please try again.', 'danger')
         return redirect(url_for('register_page'))
 
-#Manual login route
+#User login route
 @app.route("/login", methods=['GET', 'POST'])
 def login_page():
     form = LoginForm()
@@ -156,8 +156,9 @@ def login_page():
                 if attempted_reviewer and attempted_reviewer.check_password_correction(attempted_password=form.password.data):
                     if attempted_reviewer.is_active:
                         login_user(attempted_reviewer)
+                        print(attempted_reviewer)
                         flash(f'Success!! Welcome {attempted_reviewer.username}', category='success')
-                        return redirect(url_for('reviewer_dashboard'))
+                        return redirect(url_for('reviewer_dashboard', reviewer_id = attempted_reviewer.id))
                     else:
                         flash('Your account is not active. Please contact support.', category='danger')
                 else:
@@ -601,12 +602,12 @@ def create_user():
 #     return render_template('reviewer_login.html', form=form)
 
 
-@app.route('/reviewer-dashboard', methods=['GET', 'POST'])
+@app.route('/reviewer-dashboard/<int:reviewer_id>', methods=['GET', 'POST'])
 # @login_required
-def reviewer_dashboard():
+def reviewer_dashboard(reviewer_id):
     # if current_user.is_authenticated:
-    profile_details = Reviewer.query.filter((Reviewer.id == current_user.id)).all()
-    print(current_user.id)
+    profile_details = Reviewer.query.filter((Reviewer.id == reviewer_id)).all()
+    print(current_user)
     print(profile_details)
     return render_template('reviewer_dashboard.html', profile_details=profile_details)
     # else:
@@ -620,8 +621,25 @@ def track_events(event_id):
     print(event.id)
     submission = Submissions.query.filter(Submissions.event_id==event.id).all()
     print(submission)
-    return render_template('track_event.html', submission=submission, event=event)
+    reviewers_list = Reviewer.query.filter(Reviewer.is_approved==True).all()
+    return render_template('track_event.html', submission=submission, event=event, reviewers_list=reviewers_list)
 
 @app.route('/uploads/<path:filename>')
 def download_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'],filename)    
+    return send_from_directory(app.config['UPLOAD_FOLDER'],filename)  
+
+
+@app.route('/send-invite')
+def send_invite():
+    reviewer_id = request.args.get('reviewer_id')
+    event_id = request.args.get('event_id')
+
+    reviewer = Reviewer.query.get(reviewer_id)
+    event = Event.query.get(event_id)
+
+    msg = Message('New Event Document Review', sender='bharat.aggarwal@iic.ac.in', recipients=[reviewer.email_address])
+    msg.body = f'You received a new document review request. Please verify the details asap and approve or reject the request.\n\n' \
+    f'Title - {event.title}\n'
+    mail.send(msg)
+
+    return render_template('confirmation_page.html')

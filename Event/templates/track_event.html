@@ -33,6 +33,7 @@
                                                     <th>Document</th>
                                                     <th>Status</th>
                                                     <th>Assigned to</th>
+                                                    <th>Invite Reviewer</th>
                                                 </tr>
                                             </thead>
 
@@ -46,7 +47,17 @@
                                                             <a href="{{ url_for('download_file', filename=sub.document_file) }}" target="_blank">{{ sub.document_file}}</a>
                                                         </td>
                                                         <td>{{ sub.status }}</td>
-                                                        <td></td>
+                                                        <td>
+                                                            <!-- Dropdown menu for selecting the reviewer-->
+                                                            <select class="form-control" id="reviewerSelect">
+                                                                {% for reviewer in reviewers_list %}
+                                                                    <option value="{{ reviewer.id }}">{{ reviewer.full_name }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <a href="#" onclick="sendInvite()"><button class="btn btn-success">Invite</button></a>
+                                                        </td>
                                                     </tr>
                                                 {% endfor %}                     
                                             </tbody>
@@ -77,8 +88,17 @@
 
 
     <script>
+        function sendInvite(){
+        //Get the selected reviewer Id from the dropdown menu
+        var reviewerId = document.getElementById('reviewerSelect').value;
+        
+        //Redirect the user to the send_invite route with the selected reviewer id
+        window.location.href = "{{ url_for('send_invite') }}?reviewer_id=" + reviewerId + "&event_id={{ event.id }}";
+        }
+
         var role = "{{ role }}";
         console.log(role);
+
     </script>
     
 </body>

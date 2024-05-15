@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block title %}
+    Dropbox Sign Hackathon
+{% endblock %}
+
+{% block content %}
+<body>
+
+    <div class="position-relative overflow-hidden p-5 p-md-7 m-md-3 text-left" style="background-color:rgb(16, 98, 112); color:white">
+
+        {% if Invitation_details %}
+
+            <h1 class="display-4 font-weight-bold">{{ Invitation_details.title }}</h1>
+            <h2 class="font-weight-normal mb-4">{{ Invitation_details.acronym }}</h2>
+            <p class="mb-4">
+                <span class="mr-4" style="color: black;"><strong>Webpage URL:</strong> <a href="{{ Invitation_details.web_page_url }}" class="text-decoration-none text-light">{{ Invitation_details.web_page_url }}</a></span>
+                <span>
+                    <span class="mr-4" style="color: black;"><strong class="location-heading">Location:</strong></span>
+                    {{ Invitation_details.venue }}, {{ Invitation_details.city }}
+                </span>                
+            </p>
+
+            <p>
+                <span class="mr-4" style="color: black;"><strong>First Day:</strong> <span>{{ Invitation_details.first_day.strftime('%d/%m/%Y') }}</span></span>
+                <span class="mr-4" style="color: black;"><strong>Last Day:</strong> <span>{{ Invitation_details.last_day.strftime('%d/%m/%Y') }}</span></span>
+            </p>
+            <br>
+            <a href="#"><button class="btn btn-success">Accept the Invitation</button></a>
+        {% else %}
+            <p>No details! This event has ended.</p>
+        {% endif %}
+    </div>
+
+</body>
+
+<style>
+    .btn-animation {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn-animation:hover {
+        transform: scale(1.05);
+    }
+
+    
+    h1, h2, h3, h4, h5, h6 {
+        color: #fff;
+        font-weight: bold;
+    }
+
+    p, span {
+        color: #fff;
+        font-size: 18px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    
+    .webpage-url {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    
+    .location {
+        color: #fff;
+    }
+
+    
+    #fileNameWrapper {
+        margin-top: 10px;
+        margin-left: 10px; 
+    }
+
+    
+    .upload-animation {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .upload-animation:hover {
+        transform: scale(1.05);
+    }
+    .location-heading {
+        color: black;
+    }
+    
+</style>
+
+{% endblock %}

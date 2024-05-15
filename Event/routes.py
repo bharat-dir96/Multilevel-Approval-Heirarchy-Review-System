@@ -1,5 +1,5 @@
 from Event import app
-from flask import render_template, redirect, url_for, flash, request, session, abort, send_from_directory
+from flask import render_template, redirect, url_for, flash, request, session, abort, send_from_directory, json
 from Event.models import User, Event, InviteLink, Reviewer, Submissions, Guest
 from Event.forms import RegisterForm, LoginForm, SubmissionsForm, AdminForm, InviteLinks, EventForm, ReviewerForm, CreateUserForm
 from Event import db, flow, GOOGLE_CLIENT_ID, mail, ALLOWED_EXTENSIONS
@@ -7,7 +7,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from flask_dance.contrib.google import google
 from google.oauth2 import id_token
 import google.auth.transport.requests
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytz
 import secrets
 from flask_mail import Message
@@ -477,7 +477,7 @@ def approve_reviewer_request(request_id):
 
     # Mail to send to the registered users fto verify thier account.
     msg = Message('Reviewer Profile Approved', sender='bharat.aggarwal@iic.ac.in', recipients=[reviewer_request.email_address])
-    link = 'http://127.0.0.1:5000/create-user'
+    link = 'http://127.0.0.1:5000/create-user?email=' + reviewer_request.email_address
     msg.body = f'Your profile is verified. Please click on the shared link to create a new user by creating a unique username and set the password. {link}'
     mail.send(msg)
 
@@ -563,6 +563,8 @@ def create_user():
     form = CreateUserForm()
     print(form.errors)
 
+    email_address = request.args.get('email')
+
     if request.method == 'POST' and form.validate_on_submit():
         print('Form Data:', form.data)
         print(form.errors)
@@ -580,7 +582,7 @@ def create_user():
 
         return redirect(url_for('login_page'))
 
-    return render_template('create_new_user.html', form=form)
+    return render_template('create_new_user.html', form=form, email_address=email_address)
 
 # @app.route('/reviewer-login', methods=['GET', 'POST'])
 # def reviewer_login():
@@ -606,10 +608,21 @@ def create_user():
 # @login_required
 def reviewer_dashboard(reviewer_id):
     # if current_user.is_authenticated:
-    profile_details = Reviewer.query.filter((Reviewer.id == reviewer_id)).all()
-    print(current_user)
+    profile_details = Reviewer.query.filter((Reviewer.id == reviewer_id)).first()
+    # print(current_user)
     print(profile_details)
-    return render_template('reviewer_dashboard.html', profile_details=profile_details)
+
+    invitation_ids_json = profile_details.invitation_ids       # Retrieve the JSON string representing the invitation IDs for the  reviewer                                                    
+
+    invitation_ids = json.loads(invitation_ids_json) if invitation_ids_json else []         # Parse the JSON string into a list (if it exists, otherwise initialize as an empty list)
+
+    events = Event.query.filter(Event.id.in_(invitation_ids)).all()         # Retrieve the event details for the invitation IDs
+
+    current_date = datetime.now()
+
+    deadline = current_date + timedelta(days=3)
+
+    return render_template('reviewer_dashboard.html', profile_details=profile_details, events=events, deadline=deadline)
     # else:
     #     flash('You need to log in to access this page', 'warning')
     #     return redirect(url_for('login_page'))
@@ -634,8 +647,20 @@ def send_invite():
     reviewer_id = request.args.get('reviewer_id')
     event_id = request.args.get('event_id')
 
-    reviewer = Reviewer.query.get(reviewer_id)
-    event = Event.query.get(event_id)
+    reviewer = Reviewer.query.get(reviewer_id)      # Retrive the current reviewer object from the database
+    event = Event.query.get(event_id)               # Retrive the current event object from the database
+
+    invitation_ids_json = reviewer.invitation_ids           # Retrieve the current JSON string representing the invitation IDs
+
+    invitation_ids = json.loads(invitation_ids_json) if invitation_ids_json else []         # Parse the JSON string into a list (if it exists, otherwise initialize as an empty list)
+
+    invitation_ids.append(event_id)         # Append the new event ID to the list of invitation IDs
+
+    updated_invitation_ids_json = json.dumps(invitation_ids)        # Convert the updated list back to JSON string
+
+    reviewer.invitation_ids = updated_invitation_ids_json           # Update the reviewer's invitation_ids with the updated JSON string
+
+    db.session.commit()             # Commit the chnages to the database
 
     msg = Message('New Event Document Review', sender='bharat.aggarwal@iic.ac.in', recipients=[reviewer.email_address])
     msg.body = f'You received a new document review request. Please verify the details asap and approve or reject the request.\n\n' \
@@ -643,3 +668,17 @@ def send_invite():
     mail.send(msg)
 
     return render_template('confirmation_page.html')
+
+#    if reviewer.invitation_ids:
+#         # If there are existing invitation_ids, append the new event_id
+#         reviewer.invitation_ids += f',{event_id}'
+#     else:
+#         # If there are no existing invitation_ids, set the new event_id
+#         reviewer.invitation_ids = event_id
+
+#     db.session.commit()
+
+@app.route('/Invitation-details/<int:invitation_id>')
+def event_details(invitation_id):
+    Invitation_details = Event.query.get(invitation_id)
+    return render_template('invitation_details.html', Invitation_details=Invitation_details)

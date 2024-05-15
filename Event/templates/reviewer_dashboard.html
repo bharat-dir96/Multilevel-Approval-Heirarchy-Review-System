@@ -171,112 +171,110 @@
         <div class="col-md-9">
             <div class="container">
                 {% if profile_details %}
-                    {% for profile in profile_details %}
-                        <div class="box" style="grid-column: span 4">
-                            <button class="upload-circle" id="uploadBtn">
-                                <input id="profilePicInput" type="file" style="display: none;">
-                                <img id="profilePic" src="../static/Images/camera_2956744.png" alt="Upload Image">
-                            </button>
-                            <div class="field">
-                                <label for="name"><img src="../static/Images/user_9131549.png" alt="" class="icon">Name:</label>
-                                <div id="name" class="box-input">{{ profile.full_name }}</div>
+                    <div class="box" style="grid-column: span 4">
+                        <button class="upload-circle" id="uploadBtn">
+                            <input id="profilePicInput" type="file" style="display: none;">
+                            <img id="profilePic" src="../static/Images/camera_2956744.png" alt="Upload Image">
+                        </button>
+                        <div class="field">
+                            <label for="name"><img src="../static/Images/user_9131549.png" alt="" class="icon">Name:</label>
+                            <div id="name" class="box-input">{{ profile_details.full_name }}</div>
+                        </div>
+                        <div class="field">
+                            <label for="job_title"><img src="../static/Images/briefcase_2313642.png" alt="" class="icon">Job Title:</label>
+                            <div id="job_title" class="box-input">{{ profile_details.current_position }}, {{ profile_details.current_company }}</div>
+                        </div>
+                        <div class="field">
+                            <label for="job_location"><img src="../static/Images/earth_44386.png" alt="" class="icon">Job Location:</label>
+                            <div id="job_location" class="box-input">{{profile_details.current_city }}, {{ profile_details.current_country }}</div>
+                        </div>
+                    </div>
+                    <div class="box" style="grid-column: span 8;">
+                        <div class="heading">Personal & Educational Details</div>
+                        <div class="details">
+                            <div class="col-6">
+                                <div class="field">
+                                    <label for="email">Email ID:</label>
+                                    <div id="email" class="box-input">{{ profile_details.email_address }}</div>
+                                </div>
+                                <div class="field">
+                                    <label for="education">Current Highest Education:</label>
+                                    <div id="education" class="box-input">{{ profile_details.education_position }}</div>
+                                </div>
+                                <div class="field">
+                                    <label for="start_year">Start Year:</label>
+                                    <div id="start_year" class="box-input">{{ profile_details.education_start_year }}</div>
+                                </div>
+                                <div class="field">
+                                    <label for="institution_name">Institution Name:</label>
+                                    <div id="institution_name" class="box-input">{{ profile_details.inst_name }}</div>
+                                </div>
                             </div>
-                            <div class="field">
-                                <label for="job_title"><img src="../static/Images/briefcase_2313642.png" alt="" class="icon">Job Title:</label>
-                                <div id="job_title" class="box-input">{{ profile.current_position }}, {{ profile.current_company }}</div>
-                            </div>
-                            <div class="field">
-                                <label for="job_location"><img src="../static/Images/earth_44386.png" alt="" class="icon">Job Location:</label>
-                                <div id="job_location" class="box-input">{{profile.current_city }}, {{ profile.current_country }}</div>
+
+                            <div class="col-6">
+                                <div class="field">
+                                    <label for="dob">Date of Birth:</label>
+                                    <div id="dob" class="box-input">{{ profile_details.year_of_birth }}</div>
+                                </div>
+                                <div class="field">
+                                    <label for="department">Course Department:</label>
+                                    <div id="department" class="box-input">{{ profile_details.inst_department }}</div>
+                                </div>
+                                <div class="field">
+                                    <label for="end_year">End Year:</label>
+                                    <div id="end_year" class="box-input">{{ profile_details.education_end_year }}</div>
+                                </div>
+                                <div class="field">
+                                    <label for="institution_country">Institution Country:</label>
+                                    <div id="institution_country" class="box-input">{{ profile_details.inst_country }}</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="box" style="grid-column: span 8;">
-                            <div class="heading">Personal & Educational Details</div>
-                            <div class="details">
-                                <div class="col-6">
-                                    <div class="field">
-                                        <label for="email">Email ID:</label>
-                                        <div id="email" class="box-input">{{ profile.email_address }}</div>
+                    </div>
+                    <div class="box professional-box" style="grid-column: span 7;">
+                        <div class="heading">Professional Links</div>
+                        <div class="details">
+                            <div class="col-6">
+                                <div class="field">
+                                    <label for="portfolio">PORTFOLIO:</label>
+                                    <div id="portfolio" class="box-input link"><a href="{{ profile_details.homepage_url }}" target="_blank">{{ profile_details.homepage_url }}</a></div>
+                                </div>
+                                <div class="field">
+                                    <label for="google_scholar">GOOGLE SCHOLAR:</label>
+                                    <div id="google_scholar" class="box-input link"><a href="{{ profile_details.google_scholar_url }}" target="_blank">{{ profile_details.google_scholar_url }}</a></div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="field">
+                                    <label for="orcid">ORCID:</label>
+                                    <div id="orcid" class="box-input link"><a href="{{ profile_details.orcid_url }}" target="_blank">{{ profile_details.orcid_url }}</a></div>
+                                </div>
+                                <div class="field">
+                                    <label for="others">OTHERS:</label>
+                                    <div id="others" class="box-input link"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box work-status-box" style="grid-column: span 5;">
+                        <div class="heading">Work Status</div>
+                        <div class="work-status">
+                            <div class="status-box-container">
+
+                                <div class="status-box pending">PENDING
+                                    <div class="box-value">
+                                        0
                                     </div>
-                                    <div class="field">
-                                        <label for="education">Current Highest Education:</label>
-                                        <div id="education" class="box-input">{{ profile.education_position }}</div>
-                                    </div>
-                                    <div class="field">
-                                        <label for="start_year">Start Year:</label>
-                                        <div id="start_year" class="box-input">{{ profile.education_start_year }}</div>
-                                    </div>
-                                    <div class="field">
-                                        <label for="institution_name">Institution Name:</label>
-                                        <div id="institution_name" class="box-input">{{ profile.inst_name }}</div>
+                                </div>
+                                <div class="status-box completed">COMPLETED
+                                    <div class="box-value">
+                                        0
                                     </div>
                                 </div>
 
-                                <div class="col-6">
-                                    <div class="field">
-                                        <label for="dob">Date of Birth:</label>
-                                        <div id="dob" class="box-input">{{ profile.year_of_birth }}</div>
-                                    </div>
-                                    <div class="field">
-                                        <label for="department">Course Department:</label>
-                                        <div id="department" class="box-input">{{ profile.inst_department }}</div>
-                                    </div>
-                                    <div class="field">
-                                        <label for="end_year">End Year:</label>
-                                        <div id="end_year" class="box-input">{{ profile.education_end_year }}</div>
-                                    </div>
-                                    <div class="field">
-                                        <label for="institution_country">Institution Country:</label>
-                                        <div id="institution_country" class="box-input">{{ profile.inst_country }}</div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
-                        <div class="box professional-box" style="grid-column: span 7;">
-                            <div class="heading">Professional Links</div>
-                            <div class="details">
-                                <div class="col-6">
-                                    <div class="field">
-                                        <label for="portfolio">PORTFOLIO:</label>
-                                        <div id="portfolio" class="box-input link"><a href="{{ profile.homepage_url }}" target="_blank">{{ profile.homepage_url }}</a></div>
-                                    </div>
-                                    <div class="field">
-                                        <label for="google_scholar">GOOGLE SCHOLAR:</label>
-                                        <div id="google_scholar" class="box-input link"><a href="{{ profile.google_scholar_url }}" target="_blank">{{ profile.google_scholar_url }}</a></div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="field">
-                                        <label for="orcid">ORCID:</label>
-                                        <div id="orcid" class="box-input link"><a href="{{ profile.orcid_url }}" target="_blank">{{ profile.orcid_url }}</a></div>
-                                    </div>
-                                    <div class="field">
-                                        <label for="others">OTHERS:</label>
-                                        <div id="others" class="box-input link"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="box work-status-box" style="grid-column: span 5;">
-                            <div class="heading">Work Status</div>
-                            <div class="work-status">
-                                <div class="status-box-container">
-
-                                    <div class="status-box pending">PENDING
-                                        <div class="box-value">
-                                            0
-                                        </div>
-                                    </div>
-                                    <div class="status-box completed">COMPLETED
-                                        <div class="box-value">
-                                            0
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
+                    </div>
                 {% else %}
                         <h5>Something is Wrong.</h5>
                 {% endif %}
@@ -288,11 +286,19 @@
                 <div class="card text-center" style="color: black;">
                     <div class="card-title">
                         <h2 class="invite-text">Invites</h2>
-                        <br><br>
-                        <div class="box" style="grid-column: span 2">
-                            
-                            <button class="btn btn-success">Click to Accept</button>
-                        </div>
+                        {% if events %}
+                            {% for invitation in events %}
+                                <div class="card text-left" style="color:black">
+                                    <div class="card-body">
+                                        <h4 class="card-title">{{ invitation.title }}</h4>
+                                        <h6 class="card-text"><Strong>Category:</Strong> {{ invitation.category }}</h6>
+                                        <p class="card-text"><Strong>Deadline to accept: </Strong> {{ deadline.strftime('%d/%m/%Y') }}</p>
+                                        <a href="{{ url_for('event_details', invitation_id=invitation.id) }}"><button class="btn btn-success">Tap to Know more</button></a>
+                                        <hr>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
                     </div>
 
                 </div>

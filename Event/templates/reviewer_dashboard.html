@@ -293,7 +293,7 @@
                                         <h4 class="card-title">{{ invitation.title }}</h4>
                                         <h6 class="card-text"><Strong>Category:</Strong> {{ invitation.category }}</h6>
                                         <p class="card-text"><Strong>Deadline to accept: </Strong> {{ deadline.strftime('%d/%m/%Y') }}</p>
-                                        <a href="{{ url_for('event_details', invitation_id=invitation.id) }}"><button class="btn btn-success">Tap to Know more</button></a>
+                                        <a href="{{ url_for('event_details', invitation_id=invitation.id, invitation_document=invitation_ids_dict.get(invitation.id|string)) }}"><button class="btn btn-success">Tap to Know more</button></a>
                                         <hr>
                                     </div>
                                 </div>

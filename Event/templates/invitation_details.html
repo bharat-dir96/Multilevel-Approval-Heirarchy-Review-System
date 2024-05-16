@@ -26,15 +26,21 @@
                 <span class="mr-4"><strong>Last Day:&emsp; <span class="text-color">{{ Invitation_details.last_day.strftime('%d/%m/%Y') }}</strong></span></span>
             </p>
             <br>
-            <a href="#" onclick="showDocument()"><button class="btn btn-success btn-animation">Accept the Invitation</button></a>
+            <a href="#" onclick="showDocument()" id="acceptBtn"><button class="btn btn-success btn-animation">Accept the Invitation</button></a>
+            <p id="documentLink" style="display: none;"><a href="{{ url_for('download_file', filename=Invitation_document) }}" class="document-link" target="_blank">{{ Invitation_document }}</a></p>
         {% else %}
             <p>No details! This event has ended.</p>
         {% endif %}
+
+
     </div>
 
 </body>
 
 <style>
+    .document-link{
+        color: white;
+    }
     .text-color{
         color: rgba(240, 237, 74, 0.747);
     }
@@ -61,8 +67,14 @@
 
 <script>
     function showDocument(){
+
+        var acceptBtn = document.getElementById('acceptBtn');
+        var documentLink = document.getElementById('documentLink');
         
+        acceptBtn.style.display = 'none';               //Hide the accept button
+        documentLink.style.display = 'block';           //Show the document link
 
     }
+
 </script>
 {% endblock %}

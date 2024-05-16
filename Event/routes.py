@@ -604,29 +604,6 @@ def create_user():
 #     return render_template('reviewer_login.html', form=form)
 
 
-@app.route('/reviewer-dashboard/<int:reviewer_id>', methods=['GET', 'POST'])
-# @login_required
-def reviewer_dashboard(reviewer_id):
-    # if current_user.is_authenticated:
-    profile_details = Reviewer.query.filter((Reviewer.id == reviewer_id)).first()
-    # print(current_user)
-    print(profile_details)
-
-    invitation_ids_json = profile_details.invitation_ids       # Retrieve the JSON string representing the invitation IDs for the  reviewer                                                    
-
-    invitation_ids = json.loads(invitation_ids_json) if invitation_ids_json else []         # Parse the JSON string into a list (if it exists, otherwise initialize as an empty list)
-
-    events = Event.query.filter(Event.id.in_(invitation_ids)).all()         # Retrieve the event details for the invitation IDs
-
-    current_date = datetime.now()
-
-    deadline = current_date + timedelta(days=3)
-
-    return render_template('reviewer_dashboard.html', profile_details=profile_details, events=events, deadline=deadline)
-    # else:
-    #     flash('You need to log in to access this page', 'warning')
-    #     return redirect(url_for('login_page'))
-
 @app.route('/track-event/<int:event_id>', methods=['GET','POST'])
 def track_events(event_id):
     event = Event.query.get_or_404(event_id)
@@ -642,7 +619,7 @@ def download_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],filename)  
 
 
-@app.route('/send-invite')
+@app.route('/send-invite', methods=['GET','POST'])
 def send_invite():
     reviewer_id = request.args.get('reviewer_id')
     event_id = request.args.get('event_id')
@@ -657,15 +634,17 @@ def send_invite():
     submission = Submissions.query.get(sub_id)    #Retrive the current alloted submission of the event from the database
     print(submission)
 
-    invitation_ids_json = reviewer.invitation_ids           # Retrieve the current JSON string representing the invitation IDs
+    invitation_ids_json = reviewer.invitation_ids or '{}'           # Retrieve the existing dictionary stored that representing the invitation IDs
 
-    invitation_ids = json.loads(invitation_ids_json) if invitation_ids_json else []         # Parse the JSON string into a list (if it exists, otherwise initialize as an empty list)
+    invitation_ids = json.loads(invitation_ids_json)             # Parse the JSON string into a list (if it exists, otherwise initialize as an empty list)
 
-    invitation_ids.append(event_id)         # Append the new event ID to the list of invitation IDs
+    invitation_ids[event_id] = submission.document_file         # Append the new event ID to the list of invitation IDs
 
     updated_invitation_ids_json = json.dumps(invitation_ids)        # Convert the updated list back to JSON string
-
+    
     reviewer.invitation_ids = updated_invitation_ids_json           # Update the reviewer's invitation_ids with the updated JSON string
+
+    print(reviewer.invitation_ids)
 
     db.session.commit()             # Commit the chnages to the database
 
@@ -685,7 +664,39 @@ def send_invite():
 
 #     db.session.commit()
 
+@app.route('/reviewer-dashboard/<int:reviewer_id>', methods=['GET', 'POST'])
+# @login_required
+def reviewer_dashboard(reviewer_id):
+    # if current_user.is_authenticated:
+    profile_details = Reviewer.query.filter((Reviewer.id == reviewer_id)).first()
+    # print(current_user)
+    print(profile_details)
+
+    invitation_ids_json = profile_details.invitation_ids or '{}'
+
+    invitation_ids_dict = json.loads(invitation_ids_json)       # Retrieve the dictionary representing the invitation IDs for the  reviewer  
+
+    print(invitation_ids_dict)                                                  
+
+    # invitation_ids = json.loads(invitation_ids_json) if invitation_ids_json else []         # Parse the JSON string into a list (if it exists, otherwise initialize as an empty list)
+
+    event_ids = list(invitation_ids_dict.keys())        # Extract event IDs from the dictionary
+
+    events = Event.query.filter(Event.id.in_(event_ids)).all()   # Retrieve the event detials for the invitation Ids
+
+    print(events)
+    
+    current_date = datetime.now()
+    
+    deadline = current_date + timedelta(days=3)
+
+    return render_template('reviewer_dashboard.html', profile_details=profile_details, events=events, deadline=deadline, invitation_ids_dict=invitation_ids_dict)
+    # else:
+    #     flash('You need to log in to access this page', 'warning')
+    #     return redirect(url_for('login_page'))
+
 @app.route('/Invitation-details/<int:invitation_id>')
 def event_details(invitation_id):
     Invitation_details = Event.query.get(invitation_id)
-    return render_template('invitation_details.html', Invitation_details=Invitation_details)
+    Invitation_document = request.args.get('invitation_document')
+    return render_template('invitation_details.html', Invitation_details=Invitation_details, Invitation_document=Invitation_document)

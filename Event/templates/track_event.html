@@ -56,7 +56,7 @@
                                                             </select>
                                                         </td>
                                                         <td>
-                                                            <a href="#" onclick="sendInvite()"><button class="btn btn-success">Invite</button></a>
+                                                            <a href="#" onclick="sendInvite('{{ sub.id }}')"><button class="btn btn-success">Invite</button></a>
                                                         </td>
                                                     </tr>
                                                 {% endfor %}                     
@@ -88,12 +88,12 @@
 
 
     <script>
-        function sendInvite(){
+        function sendInvite(sub_id){
         //Get the selected reviewer Id from the dropdown menu
         var reviewerId = document.getElementById('reviewerSelect').value;
         
         //Redirect the user to the send_invite route with the selected reviewer id
-        window.location.href = "{{ url_for('send_invite') }}?reviewer_id=" + reviewerId + "&event_id={{ event.id }}";
+        window.location.href = "{{ url_for('send_invite') }}?reviewer_id=" + reviewerId + "&event_id={{ event.id }}" + "&sub_id=" + sub_id;
         }
 
         var role = "{{ role }}";

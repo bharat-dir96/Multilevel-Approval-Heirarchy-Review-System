@@ -646,9 +646,16 @@ def download_file(filename):
 def send_invite():
     reviewer_id = request.args.get('reviewer_id')
     event_id = request.args.get('event_id')
+    sub_id = request.args.get('sub_id')
+    print(sub_id)
 
     reviewer = Reviewer.query.get(reviewer_id)      # Retrive the current reviewer object from the database
+    print(reviewer)
     event = Event.query.get(event_id)               # Retrive the current event object from the database
+    print(event)
+
+    submission = Submissions.query.get(sub_id)    #Retrive the current alloted submission of the event from the database
+    print(submission)
 
     invitation_ids_json = reviewer.invitation_ids           # Retrieve the current JSON string representing the invitation IDs
 
@@ -667,7 +674,7 @@ def send_invite():
     f'Title - {event.title}\n'
     mail.send(msg)
 
-    return render_template('confirmation_page.html')
+    return render_template('confirmation_page.html', submission=submission)
 
 #    if reviewer.invitation_ids:
 #         # If there are existing invitation_ids, append the new event_id

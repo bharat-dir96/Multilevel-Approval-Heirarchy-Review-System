@@ -9,9 +9,16 @@
             <div class="col-lg-6">
                 <div class="card shadow-lg border-0">
                     <div class="card-body text-center">
-                        
                         <h2 class="mb-3">Invitation Sent Successfully!</h2>
                         <p class="lead">An Invitation link has been send to the email address of the choosen reviewer. You can go back to the previous page.</p>
+
+                        {% if submission %}
+                            <h5 class="mb-4">Participant's name:&emsp;{{ submission.ps_name }}</h5>
+                            <h6 class="mb-4">Document File:&emsp;
+                                <a href="{{ url_for('download_file', filename=submission.document_file) }}" target="_blank">{{ submission.document_file}}</a>
+                            </h6>
+                        {% endif %}
+
                         <a href="#" class="btn btn-primary btn-lg mt-4" onclick="goBack()">Previous Page</a>
                     </div>
                 </div>

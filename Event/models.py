@@ -3,7 +3,7 @@ from Event import bcrypt
 from flask_login import UserMixin
 from datetime import datetime
 import pytz
-from sqlalchemy import PickleType
+from sqlalchemy import JSON
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -102,7 +102,7 @@ class Reviewer(db.Model):
     #Area of Interests
     area_of_interest = db.Column(db.String(200), nullable=False)
     is_approved = db.Column(db.Boolean, default=False)
-    invitation_ids = db.Column(PickleType, default=[])
+    invitation_ids = db.Column(JSON, default={})
 
 class Submissions(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)

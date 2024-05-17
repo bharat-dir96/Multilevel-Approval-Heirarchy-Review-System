@@ -103,6 +103,11 @@ class CreateUserForm(FlaskForm):
     password2 = PasswordField(label="Confirm Password", validators=[DataRequired(), EqualTo('password1')])
     submit = SubmitField(label='Create User')
 
+class WriteReviewForm(FlaskForm):
+    title = StringField(label="Title:", validators=[Length(min=5), Length(max=30), DataRequired()]) 
+    description = StringField(label="Description:", validators=[Length(min=100), Length(max=1000), DataRequired()])
+    submit = SubmitField(label='Post Review')
+
 # class ReviewerLoginForm(FlaskForm):
 #     username = StringField(label="Username:", validators=[Length(min=8), Length(max=14), DataRequired()])
 #     password = PasswordField(label="Password:", validators=[Length(min=8), DataRequired()])

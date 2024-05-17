@@ -26,8 +26,7 @@
                 <span class="mr-4"><strong>Last Day:&emsp; <span class="text-color">{{ Invitation_details.last_day.strftime('%d/%m/%Y') }}</strong></span></span>
             </p>
             <br>
-            <a href="#" onclick="showDocument()" id="acceptBtn"><button class="btn btn-success btn-animation">Accept the Invitation</button></a>
-            <p id="documentLink" style="display: none;"><a href="{{ url_for('download_file', filename=Invitation_document) }}" class="document-link" target="_blank">{{ Invitation_document }}</a></p>
+            <a href="{{ url_for('invitation_accepted', invitation_id=Invitation_details.id, invitation_document=Invitation_document) }}" id="acceptBtn"><button class="btn btn-success btn-animation">Accept the Invitation</button></a>
         {% else %}
             <p>No details! This event has ended.</p>
         {% endif %}
@@ -39,13 +38,15 @@
 
 <style>
     .document-link{
-        color: white;
+        color: rgba(240, 237, 74, 0.747);
+        font-weight: bold;
     }
     .text-color{
         color: rgba(240, 237, 74, 0.747);
     }
     .btn-animation {
         transition: all 0.3s ease-in-out;
+        font-size: 18px;
     }
 
     .btn-animation:hover {
@@ -57,24 +58,12 @@
     }
     p, span {
         color: #fff;
-        font-size: 17px;
+        font-size: 20px;
     }
-    .webpage-url:hover {
-        color: black;
+    .document-link:hover {
+        color: white;
     }
     
 </style>
 
-<script>
-    function showDocument(){
-
-        var acceptBtn = document.getElementById('acceptBtn');
-        var documentLink = document.getElementById('documentLink');
-        
-        acceptBtn.style.display = 'none';               //Hide the accept button
-        documentLink.style.display = 'block';           //Show the document link
-
-    }
-
-</script>
 {% endblock %}

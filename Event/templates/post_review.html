@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block title %}
+    Dropbox Sign Hackathon
+{% endblock %}
+
+{% block content %}
+<body>
+
+    <div class="position-relative overflow-hidden p-5 p-md-7 m-md-3 text-left" style="background-color:rgb(16, 98, 112); color:white">
+
+        {% if Invitation_details %}
+
+            <h1 class="display-4 font-weight-bold">{{ Invitation_details.title }}</h1>
+
+            <p class="mb-4">
+                <span class="mr-4"><h4>Webpage URL:&emsp; <a href="{{ Invitation_details.web_page_url }}" class="text-color webpage-url" style="text-decoration: underline;" target="_blank">{{ Invitation_details.web_page_url }} </a></h4></span>
+            </p>
+
+            <br>
+            <!-- <a href="#" onclick="showDocument()" id="acceptBtn"><button class="btn btn-success btn-animation">Accept the Invitation</button></a> -->
+            <div>
+                <br>  
+                <h5 style="color:black">Click on the link below to download the document.</h5><br>
+                <h2><a href="{{ url_for('download_file', filename=Invitation_document) }}" class="document-link" target="_blank">{{ Invitation_document }}</a></h2>
+            </div>
+
+        {% else %}
+            <p>No details! This event has ended.</p>
+        {% endif %}
+
+        </div class="container text-center">
+            <div class="justify-content-center">
+                <div class="col-lg-7">
+                    <div class="container w-100 mt-4 p-5 bg-light rounded shadow">
+                        <h2 class="mb-4 custom-color">Write a Review</h1>
+                        <h6 class="text-secondary">Please write a comprehensive review about the submission according to the requirement and post it.</h6>
+                        <hr>
+                        <br>
+                        
+                        <form method="POST" style="color: black;" action="#">
+                            {{ form.csrf_token }}
+                            {{ form.hidden_tag() }}
+
+                            <!--Title-->
+                            {{ form.title.label() }}
+                            {{ form.title(class="form-control", placeholder="Enter the title of your review")}}
+
+                            {{ form.description.label() }}
+                            <textarea class="form-control" name="{{ form.description.data }}" rows="10" placeholder="Enter the review associated with the submitted document"></textarea>
+                            <br>
+
+                            {{ form.submit(class="btn btn-lg btn-success btn-animation") }}
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<style>
+    .document-link{
+        color: rgba(240, 237, 74, 0.747);
+        font-weight: bold;
+    }
+    .text-color{
+        color: rgba(240, 237, 74, 0.747);
+    }
+    .btn-animation {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn-animation:hover {
+        transform: scale(1.05);
+    }
+    h1, h2, h3, h4, h5, h6 {
+        color: #fff;
+        font-weight: bold;
+    }
+    p, span {
+        color: #fff;
+        font-size: 16px;
+    }
+    .document-link:hover {
+        color: white;
+    }
+    .custom-color{
+        color: rgb(49,150,168);
+    }
+    
+</style>
+<!-- 
+<script>
+    function showDocument(){
+
+        var acceptBtn = document.getElementById('acceptBtn');
+        var documentLink = document.getElementById('documentLink');
+        
+        
+        acceptBtn.style.display = 'none';               //Hide the accept button
+        documentLink.style.display = 'block';           //Show the document link
+
+    }
+
+</script> -->
+{% endblock %}

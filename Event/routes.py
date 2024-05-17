@@ -1,7 +1,7 @@
 from Event import app
 from flask import render_template, redirect, url_for, flash, request, session, abort, send_from_directory, json
 from Event.models import User, Event, InviteLink, Reviewer, Submissions, Guest
-from Event.forms import RegisterForm, LoginForm, SubmissionsForm, AdminForm, InviteLinks, EventForm, ReviewerForm, CreateUserForm
+from Event.forms import RegisterForm, LoginForm, SubmissionsForm, AdminForm, InviteLinks, EventForm, ReviewerForm, CreateUserForm, WriteReviewForm
 from Event import db, flow, GOOGLE_CLIENT_ID, mail, ALLOWED_EXTENSIONS
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_dance.contrib.google import google
@@ -700,3 +700,19 @@ def event_details(invitation_id):
     Invitation_details = Event.query.get(invitation_id)
     Invitation_document = request.args.get('invitation_document')
     return render_template('invitation_details.html', Invitation_details=Invitation_details, Invitation_document=Invitation_document)
+
+@app.route('/Invitation-accepted/<int:invitation_id>')
+def invitation_accepted(invitation_id):
+    flash('Invitation accpeted successfully. Now You can start reviewing','success')
+    Invitation_details = Event.query.get(invitation_id)
+    organizer_email_address = Invitation_details.organizer_email_address
+
+    Invitation_document = request.args.get('invitation_document')
+
+    msg = Message('Invitation Accpeted by Reviewer', sender='bharat.aggarwal@iic.ac.in', recipients=[organizer_email_address])
+    msg.body = f'Your invitation for the Event Invite is accepted by the choosen reviewer. Please continue the ongoing process for the document review.\n\n'
+    mail.send(msg)
+
+    form = WriteReviewForm()
+
+    return render_template('post_review.html', Invitation_details=Invitation_details, Invitation_document=Invitation_document, form=form)

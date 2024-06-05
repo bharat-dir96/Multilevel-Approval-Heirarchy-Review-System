@@ -7,7 +7,12 @@ from sqlalchemy import JSON
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    if user_id.startswith("guest-"):
+        return Guest.query.get(int(user_id.split('-')[1]))
+    elif user_id.startswith("user-"):
+        return User.query.get(int(user_id.split('-')[1]))
+    else:
+        return None
 
 #Database for user personal details
 class User(db.Model, UserMixin):
@@ -22,8 +27,13 @@ class User(db.Model, UserMixin):
     last_login = db.Column(db.DateTime(), default=datetime.utcnow().replace(tzinfo=pytz.UTC).astimezone(pytz.timezone('Asia/Kolkata')), nullable=True)
     verification_token = db.Column(db.String(length=32), unique=True)
     is_verified = db.Column(db.Boolean, default=False)
+    events = db.relationship('Event', backref='organizer', lazy=True)
+    submissions = db.relationship('Submissions', backref='user', lazy=True)
     '''filename = db.Column(db.String(50))
     Image_data = db.Column(db.LargeBinary)'''
+
+    def get_id(self):
+        return f"user-{self.id}"
 
     def update_last_login(self):
         self.last_login = datetime.utcnow().replace(tzinfo=pytz.UTC).astimezone(pytz.timezone('Asia/Kolkata'))
@@ -61,6 +71,7 @@ class Event(db.Model):
     other_info = db.Column(db.String(length=500))
     is_approved = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+    submission = db.relationship("Submissions", backref='event', lazy=True)
 
 #Database for user personal details
 class InviteLink(db.Model):
@@ -111,18 +122,19 @@ class Submissions(db.Model):
     sub_datetime = db.Column(db.DateTime(), default=datetime.utcnow().replace(tzinfo=pytz.UTC).astimezone(pytz.timezone('Asia/Kolkata')), nullable=False)
     document_file = db.Column(db.String(255))
     status = db.Column(db.String(20), default='Submitted')
+    current_asssigned_reviewer = db.Column(db.Integer(), unique=True)
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
     event_id = db.Column(db.Integer(), db.ForeignKey('event.id'), nullable=False)
 
     
-class Guest(db.Model):
+class Guest(db.Model, UserMixin):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     username = db.Column(db.String(20), nullable=False, unique=True)
     hash_password = db.Column(db.String(length=60), nullable=True)
     is_active = db.Column(db.Boolean, default=True)
 
     def get_id(self):
-        return str(self.id)
+        return f"guest-{self.id}"
 
     @property
     def password(self):

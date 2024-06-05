@@ -603,7 +603,6 @@ def create_user():
 
 #     return render_template('reviewer_login.html', form=form)
 
-
 @app.route('/track-event/<int:event_id>', methods=['GET','POST'])
 def track_events(event_id):
     event = Event.query.get_or_404(event_id)
@@ -611,13 +610,14 @@ def track_events(event_id):
     print(event.id)
     submission = Submissions.query.filter(Submissions.event_id==event.id).all()
     print(submission)
+
     reviewers_list = Reviewer.query.filter(Reviewer.is_approved==True).all()
+
     return render_template('track_event.html', submission=submission, event=event, reviewers_list=reviewers_list)
 
 @app.route('/uploads/<path:filename>')
 def download_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],filename)  
-
 
 @app.route('/send-invite', methods=['GET','POST'])
 def send_invite():
@@ -704,13 +704,26 @@ def event_details(invitation_id):
 @app.route('/Invitation-accepted/<int:invitation_id>')
 def invitation_accepted(invitation_id):
     flash('Invitation accpeted successfully. Now You can start reviewing','success')
+
+    submission_details = Submissions.query.get(invitation_id)
+    
+    submission_details.status = "In Progress"
+
+    print(current_user.id)
+
+    submission_details.current_asssigned_reviewer = current_user.id
+
+    print(submission_details.current_asssigned_reviewer)
+
+    db.session.commit()                      #Commit changes to the database after invite is accepted.
+    
     Invitation_details = Event.query.get(invitation_id)
     organizer_email_address = Invitation_details.organizer_email_address
 
     Invitation_document = request.args.get('invitation_document')
 
     msg = Message('Invitation Accpeted by Reviewer', sender='bharat.aggarwal@iic.ac.in', recipients=[organizer_email_address])
-    msg.body = f'Your invitation for the Event Invite is accepted by the choosen reviewer. Please continue the ongoing process for the document review.\n\n'
+    msg.body = f'Your invitation for the Event Invite titled { Invitation_details.title } is accepted by the choosen reviewer. Please continue the ongoing process for the document review.\n\n'
     mail.send(msg)
 
     form = WriteReviewForm()

@@ -4,6 +4,11 @@
 {% endblock %}
 
 {% block content %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        history.replaceState(null, '', location.origin + '/post-review/{{ invitation_id }}?invitation_document={{ invitation_document }}');
+    });
+</script>
 <body>
 
     <div class="position-relative overflow-hidden p-5 p-md-7 m-md-3 text-left" style="background-color:rgb(16, 98, 112); color:white">
@@ -105,4 +110,5 @@
     }
 
 </script> -->
+
 {% endblock %}

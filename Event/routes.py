@@ -1,6 +1,6 @@
 from Event import app
 from flask import render_template, redirect, url_for, flash, request, session, abort, send_from_directory, json
-from Event.models import User, Event, InviteLink, Reviewer, Submissions, Guest
+from Event.models import User, Event, InviteLink, Reviewer, Submissions, Guest, Reviews
 from Event.forms import RegisterForm, LoginForm, SubmissionsForm, AdminForm, InviteLinks, EventForm, ReviewerForm, CreateUserForm, WriteReviewForm
 from Event import db, flow, GOOGLE_CLIENT_ID, mail, ALLOWED_EXTENSIONS
 from flask_login import login_user, logout_user, login_required, current_user
@@ -697,26 +697,32 @@ def reviewer_dashboard(reviewer_id):
 
 @app.route('/Invitation-details/<int:invitation_id>')
 def event_details(invitation_id):
-    Invitation_details = Event.query.get(invitation_id)
-    Invitation_document = request.args.get('invitation_document')
-    return render_template('invitation_details.html', Invitation_details=Invitation_details, Invitation_document=Invitation_document)
+    submission_details = Submissions.query.get(invitation_id)
+
+    if submission_details.status != "In Progress":
+        Invitation_details = Event.query.get(invitation_id)
+        Invitation_document = request.args.get('invitation_document')
+        return render_template('invitation_details.html', Invitation_details=Invitation_details, Invitation_document=Invitation_document)
+    else:
+        Invitation_details = Event.query.get(invitation_id)
+        Invitation_document = request.args.get('invitation_document')
+        form = WriteReviewForm()
+        return render_template('post_review.html', Invitation_details=Invitation_details, Invitation_document=Invitation_document, form=form)
+    
 
 @app.route('/Invitation-accepted/<int:invitation_id>')
 def invitation_accepted(invitation_id):
     flash('Invitation accpeted successfully. Now You can start reviewing','success')
 
     submission_details = Submissions.query.get(invitation_id)
-    
     submission_details.status = "In Progress"
-
     print(current_user.id)
-
     submission_details.current_asssigned_reviewer = current_user.id
-
     print(submission_details.current_asssigned_reviewer)
-
     db.session.commit()                      #Commit changes to the database after invite is accepted.
-    
+
+    session['invitation_accepted'] = True   
+        
     Invitation_details = Event.query.get(invitation_id)
     organizer_email_address = Invitation_details.organizer_email_address
 
@@ -726,6 +732,13 @@ def invitation_accepted(invitation_id):
     msg.body = f'Your invitation for the Event Invite titled { Invitation_details.title } is accepted by the choosen reviewer. Please continue the ongoing process for the document review.\n\n'
     mail.send(msg)
 
-    form = WriteReviewForm()
+    return redirect(url_for('reviewer_dashboard', reviewer_id=current_user.id))
 
-    return render_template('post_review.html', Invitation_details=Invitation_details, Invitation_document=Invitation_document, form=form)
+@app.route('/post-review/<int:invitation_id>')
+def post_review(invitation_id):
+
+    Invitation_details = Event.query.get(invitation_id)
+    Invitation_document = request.args.get('invitation_document')   
+
+    form = WriteReviewForm()
+    return render_template('post_review.html', Invitation_details=Invitation_details, invitation_id=invitation_id, Invitation_document=Invitation_document, form=form)

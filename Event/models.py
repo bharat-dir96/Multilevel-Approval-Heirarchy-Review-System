@@ -145,3 +145,12 @@ class Guest(db.Model, UserMixin):
         self.hash_password = bcrypt.generate_password_hash(plain_text_password).decode('utf-8')
     def check_password_correction(self, attempted_password):
         return bcrypt.check_password_hash(self.hash_password, attempted_password)
+
+class Reviews(db.Model):
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    title = db.Column(db.String(20), nullable=False)
+    description = db.Column(db.String(100), nullable=False)
+    event_id = db.Column(db.Integer(), db.ForeignKey('event.id'), nullable=False)
+    submission_id = db.Column(db.Integer(), db.ForeignKey('submissions.id'), nullable=False)
+    reviewer_id = db.Column(db.Integer(), db.ForeignKey('reviewer.id'), nullable=False)
+    

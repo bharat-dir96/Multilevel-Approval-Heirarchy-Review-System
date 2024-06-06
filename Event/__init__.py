@@ -6,6 +6,7 @@ from flask_dance.contrib.google import make_google_blueprint, google
 from google_auth_oauthlib.flow import Flow
 from flask_mail import Mail
 from flask_wtf.csrf import CSRFProtect
+from flask_migrate import Migrate
 
 import os
 import pathlib
@@ -23,6 +24,7 @@ csrf = CSRFProtect(app)
 login_manager = LoginManager(app)
 login_manager.login_view = "login_page"
 login_manager.login_message_category = "info" 
+migrate = Migrate(app,db)
 
 ALLOWED_EXTENSIONS = set(['txt','pdf','xls','xlsx','doc','docx','ppt','pptx'])
 

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-    Dropbox Sign Hackathon
+    {{ Invitation_details.title }}
 {% endblock %}
 
 {% block content %}
@@ -42,7 +42,7 @@
                         <hr>
                         <br>
                         
-                        <form method="POST" style="color: black;" action="#">
+                        <form method="POST" style="color: black;" action="{{ url_for('post_review', invitation_id=invitation_id) }}">
                             {{ form.csrf_token }}
                             {{ form.hidden_tag() }}
 
@@ -51,7 +51,7 @@
                             {{ form.title(class="form-control", placeholder="Enter the title of your review")}}
 
                             {{ form.description.label() }}
-                            <textarea class="form-control" name="{{ form.description.data }}" rows="10" placeholder="Enter the review associated with the submitted document"></textarea>
+                            {{ form.description(class="form-control", rows="10", placeholder="Enter the review associated with the submitted document") }}
                             <br>
 
                             {{ form.submit(class="btn btn-lg btn-success btn-animation") }}

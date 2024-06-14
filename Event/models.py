@@ -149,7 +149,7 @@ class Guest(db.Model, UserMixin):
 class Reviews(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     title = db.Column(db.String(20), nullable=False)
-    description = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(1000), nullable=False)
     event_id = db.Column(db.Integer(), db.ForeignKey('event.id'), nullable=False)
     submission_id = db.Column(db.Integer(), db.ForeignKey('submissions.id'), nullable=False)
     reviewer_id = db.Column(db.Integer(), db.ForeignKey('reviewer.id'), nullable=False)

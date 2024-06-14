@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}
+    Please Confirm your Email
+{% endblock %}
+
+{% block content %}
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card shadow-lg border-0">
+                    <div class="card-body text-center">
+                        <h2 class="mb-3">Review Posted Successfully!</h2>
+                        <p class="lead">Your review is posted successfully. Please continue with the other assigned documents.</p>
+
+                        <a href="#" class="btn btn-primary btn-lg mt-4" onclick="goBack()">Previous Page</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goBack(){
+            window.history.back();
+        }
+    </script>
+    
+{% endblock %}

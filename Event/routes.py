@@ -707,7 +707,7 @@ def event_details(invitation_id):
         Invitation_details = Event.query.get(invitation_id)
         Invitation_document = request.args.get('invitation_document')
         form = WriteReviewForm()
-        return render_template('post_review.html', Invitation_details=Invitation_details, Invitation_document=Invitation_document, form=form)
+        return render_template('post_review.html', Invitation_details=Invitation_details, Invitation_document=Invitation_document, form=form, invitation_id=invitation_id)
     
 
 @app.route('/Invitation-accepted/<int:invitation_id>')
@@ -734,11 +734,44 @@ def invitation_accepted(invitation_id):
 
     return redirect(url_for('reviewer_dashboard', reviewer_id=current_user.id))
 
-@app.route('/post-review/<int:invitation_id>')
+@app.route('/post-review/<int:invitation_id>', methods=['GET','POST'])
 def post_review(invitation_id):
 
-    Invitation_details = Event.query.get(invitation_id)
-    Invitation_document = request.args.get('invitation_document')   
-
     form = WriteReviewForm()
-    return render_template('post_review.html', Invitation_details=Invitation_details, invitation_id=invitation_id, Invitation_document=Invitation_document, form=form)
+    print(f"Form: {form}")
+    print({form.title.data})
+    print({form.description.data})
+
+    submission_details = Submissions.query.get(invitation_id)
+    print(submission_details)
+    
+    submission_id = submission_details.id
+
+    print(f"Submission ID: {submission_id}")
+
+    if request.method  == 'POST' and form.validate_on_submit():
+        print(f"Title: {form.title.data}")
+        print(f"Description: {form.description.data}")
+
+        review = Reviews(
+            title = form.title.data,
+            description = form.description.data,
+            reviewer_id = current_user.id,
+            event_id = invitation_id,
+            submission_id = submission_id
+        )
+        print(f"Review:{{review}}")
+        db.session.add(review)
+        try:
+            db.session.commit()
+            flash('Your Review is successfully posted!', category='success')
+        except Exception as e:
+            db.session.rollback()
+            print(f"Database Error: {e}")
+    else:
+        if request.method == 'POST':
+            # Print form errors to debug validation issues
+            print(f"Form errors: {form.errors}")
+        flash('Review is  not posted successfully. Please try again.', category='danger')
+    
+    return render_template('review_posted_confirmation.html')

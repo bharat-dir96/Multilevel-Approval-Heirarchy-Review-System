@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, FileField, IntegerField, SelectField, DateTimeField
+from wtforms import StringField, PasswordField, SubmitField, FileField, IntegerField, SelectField, DateTimeField, TextAreaField
 from wtforms.validators import Length,EqualTo, Email, DataRequired, ValidationError, NumberRange, URL
 from Event.models import User, Event
 from flask_wtf.recaptcha import RecaptchaField
@@ -105,7 +105,7 @@ class CreateUserForm(FlaskForm):
 
 class WriteReviewForm(FlaskForm):
     title = StringField(label="Title:", validators=[Length(min=5), Length(max=30), DataRequired()]) 
-    description = StringField(label="Description:", validators=[Length(min=100), Length(max=1000), DataRequired()])
+    description = TextAreaField(label="Description:", validators=[Length(min=10), Length(max=1000), DataRequired()])
     submit = SubmitField(label='Post Review')
 
 # class ReviewerLoginForm(FlaskForm):

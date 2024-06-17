@@ -1,38 +1,62 @@
 {% extends 'base.html' %}
 {% block title %}
-    Dropbox Sign Hackathon
+    {{ event.title }}
 {% endblock %}
 
 {% block content %}
 <body>
 
-    <div class="position-relative overflow-hidden p-5 p-md-7 m-md-3 text-left" style="background-color:rgb(16, 98, 112); color:white">
+    <div class="position-relative overflow-hidden p-5 p-md-7 m-md-3 text-left" style="background-color:rgb(156, 34, 194); color:white">
 
         {% if event %}
-
+            <h5>Category - <span class="category">{{ event.category }}</span></h5>
             <h1 class="display-4 font-weight-bold">{{ event.title }}</h1>
             <h2 class="font-weight-normal mb-4">{{ event.acronym }}</h2>
-            <p class="lead mb-4">
-                <span class="mr-4" style="color: black;"><strong>Deadline:</strong> <span>{{ event.last_day.strftime('%d/%m/%Y') }}</span></span>
-                <span class="mr-4" style="color: black;"><strong>Webpage URL:</strong> <a href="{{ event.web_page_url }}" class="text-decoration-none text-light">{{ event.web_page_url }}</a></span>
-                <span>
-                    <span class="mr-4" style="color: black;"><strong class="location-heading">Location:</strong></span>
-                    {{ event.venue }}, {{ event.city }}
-                </span>                
-            </p>
+            <br>
+            <h4 class="lead mb-4">
+                <span class="mr-4 important"><strong>Deadline:</strong> <span class="deadline">{{ event.last_day.strftime('%d/%m/%Y') }}</span></span>
+                <span class="mr-4 important"><strong>Webpage URL:</strong> <span class="webpage-url"> <a href="{{ event.web_page_url }}" class="text-decoration-underline" target="_blank">{{ event.web_page_url }}</a></span></span>
+                <span class="mr-4 important"><strong>Location: </strong><span class="location">{{ event.venue }}, {{ event.city }}</span></span>
+            </h4>
+            <br><br>
+            <span class="mr-4 area"><strong>Primary Area - </strong><span class="primary">{{ event.primary_area }}</span></span><br>
+            <span class="mr-4 area"><strong>Secondary Area - </strong><span class="secondary">{{ event.secondary_area }}</span></span>
+            <br><br>
+            <h5 class="info">Please visit the venue website for more information.</h5>
 
+            <!--Upload and Submit Buttons-->
             <form id="uploadForm" method="POST" enctype='multipart/form-data' class="d-flex flex-column align-items-center">
                 {{ form.hidden_tag() }}  
                 <div class="d-flex flex-column align-items-center mb-2">
-                    <label for="document_file" id="uploadLabel" class="btn btn-primary btn-animation">Choose File</label>
+                    <label for="document_file" id="uploadLabel" class="btn custom-upload-btn btn-primary btn-lg btn-animation">Choose File</label>
                     <input type="file" name="document_file" id="document_file" class="d-none">
                 </div>
                 <span class="d-block mb-2" id="fileNameWrapper"><span id="fileName"></span></span>
-                <button type="submit" class="btn btn-success d-none upload-animation" id="uploadButton">Upload</button>
+                <button type="submit" class="btn custom-submit-btn btn-success d-none upload-animation" id="uploadButton">Upload</button>
             </form>
         {% else %}
             <p>No details! This event has ended.</p>
         {% endif %}
+    </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="successModalLabel" style="color: black;">Submission Confirmation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" style="color: black;">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            Your file has been successfully uploaded.
+            </div>
+            <div class="modal-footer">
+            <a href="{{ url_for('event_page') }}"><button type="button" class="btn btn-primary btn-animation" data-dismiss="modal">OK</button></a>
+            </div>
+        </div>
+        </div>
     </div>
 
 </body>
@@ -62,14 +86,25 @@
             uploadButton.appendChild(spinner);
         });
 
-        uploadForm.addEventListener('submit', function() {
-            setTimeout(function() {
-                alert('Document uploaded successfully!');
-                fileName.textContent = '';
-                fileNameWrapper.classList.add('d-none'); 
+        uploadForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(uploadForm);
+            
+            fetch(uploadForm.action, {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json()).then(data => {
+                if (data.success) {
+                    $('#successModal').modal('show');
+                } else {
+                    alert('File upload failed: ' + data.message);
+                }
+            }).catch(error => {
+                alert('An error occurred: ' + error.message);
+            }).finally(() => {
                 uploadButton.innerHTML = 'Upload';
                 uploadButton.classList.add('d-none');
-            }, 4000); 
+            });
         });
     });
 </script>
@@ -82,7 +117,6 @@
     .btn-animation:hover {
         transform: scale(1.05);
     }
-
     
     h1, h2, h3, h4, h5, h6 {
         color: #fff;
@@ -91,31 +125,67 @@
 
     p, span {
         color: #fff;
-        font-size: 18px;
+        font-size: 22px;
     }
 
     label {
         font-weight: bold;
     }
 
-    
-    .webpage-url {
-        color: #fff;
-        text-decoration: none;
-    }
-
-    
-    .location {
+    .important {
+        font-weight: bold;
+        font-size: 1.2rem;
+        font-family:Georgia, 'Times New Roman', Times, serif;
         color: #fff;
     }
 
-    
+    .deadline, .webpage-url, .location, .category, .primary, .secondary {
+        color: #ebf562;
+    }
+
+    .webpage-url a{
+        color: #ebf562;
+    }
+
+    .info{
+        font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        color: rgb(32, 20, 45);
+    }
+
+    .area{
+        font-weight: bold;
+        font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+
     #fileNameWrapper {
         margin-top: 10px;
         margin-left: 10px; 
     }
 
-    
+    .custom-upload-btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1.2rem;
+    }
+
+    .custom-upload-btn:hover {
+        background-color: #0056b3;
+    }
+
+    .custom-submit-btn {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1.2rem;
+    }
+
+    .custom-submit-btn:hover {
+        background-color: #218838;
+    }
+
     .upload-animation {
         transition: all 0.3s ease-in-out;
     }

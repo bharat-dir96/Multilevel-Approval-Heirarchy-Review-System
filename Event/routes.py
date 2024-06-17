@@ -1,5 +1,5 @@
 from Event import app
-from flask import render_template, redirect, url_for, flash, request, session, abort, send_from_directory, json
+from flask import render_template, redirect, url_for, flash, request, session, abort, send_from_directory, json, jsonify
 from Event.models import User, Event, InviteLink, Reviewer, Submissions, Guest, Reviews
 from Event.forms import RegisterForm, LoginForm, SubmissionsForm, AdminForm, InviteLinks, EventForm, ReviewerForm, CreateUserForm, WriteReviewForm
 from Event import db, flow, GOOGLE_CLIENT_ID, mail, ALLOWED_EXTENSIONS
@@ -292,8 +292,8 @@ def event_registration(event_id):
         file = submission_doc.document_file.data
 
         if file.filename == '':                             
-            flash('No file selected for uploading')
-            return redirect(request.url)
+            return jsonify({'success': False, 'message': 'No file selected for uploading'}), 400
+            # return redirect(request.url)
 
         if file and allowed_file(file.filename):                #checking if file extension is allowed
             filename = secure_filename(file.filename)
@@ -311,7 +311,7 @@ def event_registration(event_id):
             db.session.add(submission)
             db.session.commit()
 
-            flash('File has been Succesfully uploaded.','success')
+            # flash('File has been Succesfully uploaded.','success')
 
             #Retrive the objects of Current User and Current Event  
             user = User.query.get(current_user.id)
@@ -322,16 +322,25 @@ def event_registration(event_id):
             db.session.add(user)
             db.session.commit()
 
+            return jsonify({'success': True}), 200
         else:
-            flash(f"File did not uploaded!!! Allowed file types are 'txt','pdf','xls','xlsx','doc','docx','ppt','pptx'", category='danger')
-            return redirect(request.url)
+            return jsonify({'success': False, 'message': "Allowed file types are 'txt','pdf','xls','xlsx','doc','docx','ppt','pptx'"}), 400
+
+        # else:
+        #     flash(f"File did not uploaded!!! Allowed file types are 'txt','pdf','xls','xlsx','doc','docx','ppt','pptx'", category='danger')
+        #     return redirect(request.url)
             
     return render_template('event_registration.html', form=submission_doc, event=event)
 
 def allowed_file(filename):                                     #function used to define all the allowed extensions.
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@app.route('/track-submissions/<int:event_id>')
+def track_submission(event_id):
+    event = Event.query.get_or_404(event_id)
+    submission = Submissions.query.filter(Submissions.event_id==event.id and Submissions.user_id==current_user.id).all()
 
+    return render_template('track_submission.html', event=event, submission=submission)
 
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #Organizer

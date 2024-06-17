@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ event.title }}
+{% endblock %}
+
+{% block content %}
+<body>
+
+    <div class="position-relative overflow-hidden p-5 p-md-7 m-md-3 text-left" style="background-color:rgb(23, 202, 101); color:white">
+
+        {% if event %}
+            <h5>Category - <span class="category">{{ event.category }}</span></h5>
+            <h1 class="display-4 font-weight-bold">{{ event.title }}</h1>
+            <h2 class="font-weight-normal mb-4">{{ event.acronym }}</h2>
+            <br>
+            <h4 class="lead mb-4">
+                <span class="mr-4 important"><strong>Deadline:</strong> <span class="deadline">{{ event.last_day.strftime('%d/%m/%Y') }}</span></span>
+                <span class="mr-4 important"><strong>Webpage URL:</strong> <span class="webpage-url"> <a href="{{ event.web_page_url }}" class="text-decoration-underline" target="_blank">{{ event.web_page_url }}</a></span></span>
+            </h4>
+        {% else %}
+            <p>No details! This event has ended.</p>
+        {% endif %}
+            
+        <br><br>
+
+        {% if submission %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>S.No.</th>
+                            <th>Email Address</th>
+                            <th>Submission Date & Time</th>
+                            <th>Document</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for sub in submission %}
+                            <tr class="table-info">
+                                <td>{{ loop.index }}</td>
+                                <td>{{ sub.ps_email_address }}</td>
+                                <td>{{ sub.sub_datetime.strftime("%d-%m-%Y, %H:%M") }}</td>
+                                <td>
+                                    <a href="{{ url_for('download_file', filename=sub.document_file) }}" target="_blank">{{ sub.document_file}}</a>
+                                </td>
+
+                                    <td>{{ sub.status }}</td>
+                            </tr>
+                        {% endfor %}                     
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+                <h6>No Submissions till now!!</h6>
+        {% endif %}
+    </div>
+
+
+
+</body>
+
+
+
+<style>
+    .btn-animation {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn-animation:hover {
+        transform: scale(1.05);
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        color: #fff;
+        font-weight: bold;
+    }
+
+    p, span {
+        color: black;
+        font-size: 22px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    .important {
+        font-weight: bold;
+        font-size: 1.2rem;
+        font-family:Georgia, 'Times New Roman', Times, serif;
+    }
+
+    .deadline, .webpage-url, .location, .category, .primary, .secondary {
+        color: white;
+    }
+
+    .webpage-url a{
+        color: white;
+    }
+
+    .info{
+        font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        color: rgb(32, 20, 45);
+    }
+
+    .area{
+        font-weight: bold;
+        font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+
+    #fileNameWrapper {
+        margin-top: 10px;
+        margin-left: 10px; 
+    }
+
+    .custom-upload-btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1.2rem;
+    }
+
+    .custom-upload-btn:hover {
+        background-color: #0056b3;
+    }
+
+    .custom-submit-btn {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1.2rem;
+    }
+
+    .custom-submit-btn:hover {
+        background-color: #218838;
+    }
+
+    .upload-animation {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .upload-animation:hover {
+        transform: scale(1.05);
+    }
+    .location-heading {
+        color: black;
+    }
+    
+</style>
+
+{% endblock %}

@@ -45,21 +45,20 @@
             <div class="registered-events">
                 {% if registered_events %}
                     {% for event in registered_events %}
-                        <div class="card text-left registered-card" style="color:black">
+                        <div class="card text-left registered-card mb-4" style="color:black">
                             <div class="row">                           
                                 <div class="col-md-12">                  <!--Column for the card content-->
                                     <div class="card-body">
                                         <h2 class="card-title">{{ event.title }}</h2>
                                         <h6 class="card-text">{{ event.acronym }}</h6>
-                                        <p class="card-text">Deadline: {{ event.last_day.strftime('%d/%m/%Y') }}</p>
-                                        <a href="#" class="btn btn-primary animated-button">Track Your Submission</a>
+                                        <p class="card-text">Deadline: <strong>{{ event.last_day.strftime('%d/%m/%Y') }}</strong></p>
+                                        <a href="{{ url_for('track_submission', event_id=event.id) }}" class="btn btn-primary animated-button">Track Your Submission</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     {% endfor %}
                 {% endif %}
-
             </div>        
         </div>
 

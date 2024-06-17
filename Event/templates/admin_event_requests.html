@@ -39,7 +39,7 @@
                                         <td>{{ loop.index }}.</td>
                                         <td>{{ event_request.category }}</td>
                                         <td>{{ event_request.title }}</td>
-                                        <td>{{ event_request.web_page_url }}</td>
+                                        <td><a href="{{ event_request.web_page_url }}" target="_blank">{{ event_request.web_page_url }}</a></td>
                                         <td>{{ event_request.venue }}</td>
                                         <td>{{ event_request.country }}</td>
                                         <td>{{ event_request.first_day }}</td>
@@ -48,7 +48,7 @@
                                         <td>{{ event_request.secondary_area }}</td>
                                         <td>{{ event_request.area_notes }}</td>
                                         <td>{{ event_request.organizer_name }}</td>
-                                        <td>{{ event_request.organizer_web_page }}</td>
+                                        <td><a href="{{ event_request.organizer_web_page }}" target="_blank">{{ event_request.organizer_web_page }}</a></td>
                                         <td>{{ event_request.phone_no }}</td>
                                         <td>{{ event_request.other_info}}</td>
                                         <td>

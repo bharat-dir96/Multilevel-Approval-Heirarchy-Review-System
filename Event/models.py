@@ -3,7 +3,7 @@ from Event import bcrypt
 from flask_login import UserMixin
 from datetime import datetime
 import pytz
-from sqlalchemy import JSON
+from sqlalchemy import JSON, Table, Column, Integer, ForeignKey
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -13,6 +13,11 @@ def load_user(user_id):
         return User.query.get(int(user_id.split('-')[1]))
     else:
         return None
+
+user_events = Table('user_events', db.Model.metadata,
+                    Column('user_id', Integer, ForeignKey('user.id'), primary_key=True),
+                    Column('event_id', Integer, ForeignKey('event.id'), primary_key=True),
+                    )
 
 #Database for user personal details
 class User(db.Model, UserMixin):
@@ -27,6 +32,8 @@ class User(db.Model, UserMixin):
     last_login = db.Column(db.DateTime(), default=datetime.utcnow().replace(tzinfo=pytz.UTC).astimezone(pytz.timezone('Asia/Kolkata')), nullable=True)
     verification_token = db.Column(db.String(length=32), unique=True)
     is_verified = db.Column(db.Boolean, default=False)
+
+    registered_events = db.relationship('Event', secondary=user_events, back_populates='registered_users')
     events = db.relationship('Event', backref='organizer', lazy=True)
     submissions = db.relationship('Submissions', backref='user', lazy=True)
     '''filename = db.Column(db.String(50))
@@ -71,6 +78,8 @@ class Event(db.Model):
     other_info = db.Column(db.String(length=500))
     is_approved = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+
+    registered_users = db.relationship('User', secondary=user_events, back_populates='registered_events')
     submission = db.relationship("Submissions", backref='event', lazy=True)
 
 #Database for user personal details

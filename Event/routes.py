@@ -265,9 +265,17 @@ def callback():
 
 @app.route('/event-page')                   #route for redirecting the authenticated users to the main event page.
 def event_page():
-
     event_approved = Event.query.filter_by(is_approved=True).all()
-    return render_template('event_page.html', event_approved=event_approved)
+    user = User.query.get(current_user.id)                          #Retrive the current user.
+    registered_events = user.registered_events                      #Retrive the current user's registered events details.
+
+    registered_events_ids = {event.id for event in registered_events}       #Creates a list of ids where current user is regsitered.
+    not_registered_events = [event for event in event_approved if event.id not in registered_events_ids]
+
+    print(registered_events)
+    print(not_registered_events)
+
+    return render_template('event_page.html', registered_events=registered_events, not_registered_events=not_registered_events)
 
 @app.route('/google-event-page')
 def google_event_page():
@@ -304,6 +312,15 @@ def event_registration(event_id):
             db.session.commit()
 
             flash('File has been Succesfully uploaded.','success')
+
+            #Retrive the objects of Current User and Current Event  
+            user = User.query.get(current_user.id)
+            event = Event.query.get(event_id)
+
+            user.registered_events.append(event)
+
+            db.session.add(user)
+            db.session.commit()
 
         else:
             flash(f"File did not uploaded!!! Allowed file types are 'txt','pdf','xls','xlsx','doc','docx','ppt','pptx'", category='danger')

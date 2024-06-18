@@ -20,80 +20,149 @@
             
                         {{ form.full_name.label() }}
                         {{ form.full_name(class="form-control", placeholder="Enter your name here") }}
+                        {% for error in form.full_name.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
                         
                         {{ form.gender.label() }}
                         {{ form.gender(class="form-control", placeholder="") }}
+                        {% for error in form.gender.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         {{ form.year_of_birth.label() }}
                         {{ form.year_of_birth(class="form-control", placeholder="Enter your year of birth") }}
+                        {% for error in form.year_of_birth.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         {{ form.email_address.label() }}
                         {{ form.email_address(class="form-control", placeholder="Enter only valid email address") }}
+                        {% for error in form.email_address.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         <hr>
             
                         {{ form.homepage_url.label() }}
                         {{ form.homepage_url(class="form-control", placeholder="") }}
+                        {% for error in form.homepage_url.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         {{ form.google_scholar_url.label() }}
                         {{ form.google_scholar_url(class="form-control", placeholder="") }}
+                        {% for error in form.google_scholar_url.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         {{ form.orcid_url.label() }}
                         {{ form.orcid_url(class="form-control", placeholder="") }}
+                        {% for error in form.orcid_url.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         <hr>
             
                         {{ form.education_position.label() }}
                         {{ form.education_position(class="form-control", placeholder="Choose or type a position") }}
+                        {% for error in form.education_position.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         {{ form.education_start_year.label() }}
                         {{ form.education_start_year(class="form-control", placeholder="start year") }}
+                        {% for error in form.education_start_year.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         {{ form.education_end_year.label() }}
                         {{ form.education_end_year(class="form-control", placeholder="end year") }}
+                        {% for error in form.education_end_year.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         {{ form.inst_domain.label() }}
                         {{ form.inst_domain(class="form-control", placeholder="Choose or type an institution") }}
+                        {% for error in form.inst_domain.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         {{ form.inst_name.label() }}
                         {{ form.inst_name(class="form-control", placeholder="Institution Name")}}
+                        {% for error in form.inst_name.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         {{ form.inst_country.label() }}
                         {{ form.inst_country(class="form-control", placeholder="Institution Country/Religion")}}
+                        {% for error in form.inst_country.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         {{ form.inst_state.label() }}
                         {{ form.inst_state(class="form-control", placeholder="Institution State/Province")}}
+                        {% for error in form.inst_state.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         {{ form.inst_city.label() }}
                         {{ form.inst_city(class="form-control", placeholder="Institution City")}}
+                        {% for error in form.inst_city.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         {{ form.inst_department.label() }}
                         {{ form.inst_department(class="form-control", placeholder="Department of Institution")}}
+                        {% for error in form.inst_department.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         <hr>    
                         
                         {{ form.current_position.label() }}
                         {{ form.current_position(class="form-control", placeholder="Enter your current work position")}}
+                        {% for error in form.current_position.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         {{ form.current_company.label() }}
                         {{ form.current_company(class="form-control", placeholder="Enter your current company name") }}
+                        {% for error in form.current_company.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         {{ form.current_start_year.label() }}
                         {{ form.current_start_year(class="form-control", placeholder="start year")}}
+                        {% for error in form.current_start_year.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         {{ form.current_end_year.label() }}
                         {{ form.current_end_year(class="form-control", placeholder="end year")}}
+                        {% for error in form.current_end_year.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         {{ form.current_city.label() }}
                         {{ form.current_city(class="form-control", placeholder="Company City")}}
+                        {% for error in form.current_city.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         {{ form.current_country.label() }}
                         {{ form.current_country(class="form-control", placeholder="Company State")}}
+                        {% for error in form.current_country.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
             
                         <hr>
             
                         {{ form.area_of_interest.label() }}
                         {{ form.area_of_interest(class="form-control", placeholder="Area of Interests")}}
+                        {% for error in form.area_of_interest.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
                 
                         <br><br>
             

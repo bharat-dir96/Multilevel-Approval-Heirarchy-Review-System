@@ -4,11 +4,7 @@
 {% endblock %}
 
 {% block content %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        history.replaceState(null, '', location.origin + '/post-review/{{ invitation_id }}?invitation_document={{ invitation_document }}');
-    });
-</script>
+
 <body>
 
     <div class="position-relative overflow-hidden p-5 p-md-7 m-md-3 text-left" style="background-color:rgb(16, 98, 112); color:white">
@@ -49,11 +45,25 @@
                             <!--Title-->
                             {{ form.title.label() }}
                             {{ form.title(class="form-control", placeholder="Enter the title of your review")}}
+                            {% for error in form.title.errors %}
+                                <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
 
+                            <br>
                             {{ form.description.label() }}
                             {{ form.description(class="form-control", rows="10", placeholder="Enter the review associated with the submitted document") }}
-                            <br>
+                            {% for error in form.description.errors %}
+                                <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
 
+                            <br>
+                            {{ form.action.label() }}
+                            {{ form.action(class="form-control") }}
+                            {% for error in form.action.errors %}
+                                <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+
+                            <br><br>
                             {{ form.submit(class="btn btn-lg btn-success btn-animation") }}
 
                         </form>
@@ -64,6 +74,15 @@
     </div>
 
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Only modify history when user clicks on submit button
+        document.querySelector('form').addEventListener('submit', function() {
+            history.replaceState(null, '', location.origin + '/post-review/{{ invitation_id }}?invitation_document={{ invitation_document }}');
+        });
+    });
+</script>
 
 <style>
     .document-link{
@@ -96,19 +115,4 @@
     }
     
 </style>
-<!-- 
-<script>
-    function showDocument(){
-
-        var acceptBtn = document.getElementById('acceptBtn');
-        var documentLink = document.getElementById('documentLink');
-        
-        
-        acceptBtn.style.display = 'none';               //Hide the accept button
-        documentLink.style.display = 'block';           //Show the document link
-
-    }
-
-</script> -->
-
 {% endblock %}

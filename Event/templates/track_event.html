@@ -67,11 +67,10 @@
                                                             <td>
                                                                 <!-- Dropdown menu for selecting the reviewer-->
                                                                 {% for reviewer in reviewers_list %}
-                                                                    {% if reviewer.id == sub.current_asssigned_reviewer %}
+                                                                    {% if reviewer.id == sub.current_assigned_reviewer %}
                                                                         {{ reviewer.full_name }}
                                                                     {% endif %}
                                                                 {% endfor %}
-                                                                {{ sub.current_assigned_reviewer }}
                                                             </td>
                                                             <td>
                                                                 <a href="#"><button class="btn btn-success">Track Review</button></a>

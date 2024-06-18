@@ -104,8 +104,9 @@ class CreateUserForm(FlaskForm):
     submit = SubmitField(label='Create User')
 
 class WriteReviewForm(FlaskForm):
-    title = StringField(label="Title:", validators=[Length(min=5), Length(max=30), DataRequired()]) 
-    description = TextAreaField(label="Description:", validators=[Length(min=10), Length(max=1000), DataRequired()])
+    title = StringField(label="Title:", validators=[Length(min=0), Length(max=30)]) 
+    description = TextAreaField(label="Description:", validators=[Length(min=0), Length(max=1000)])
+    action = SelectField(label="Action:", choices=[('','select an option'), ('Approved without Feedback','Approved without Feedback'), ('Approved with Feedback','Approved with Feedback'), ('Rejected','Rejected')])
     submit = SubmitField(label='Post Review')
 
 # class ReviewerLoginForm(FlaskForm):

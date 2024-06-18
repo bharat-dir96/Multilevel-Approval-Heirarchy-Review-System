@@ -22,81 +22,132 @@
                         <!-- Category -->
                         {{ form.category.label() }}
                         {{ form.category(class="form-control", placeholder="Enter event category") }}
+                        {% for error in form.category.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
                         <hr>
 
                         <!-- Title -->
                         {{ form.title.label() }}
                         {{ form.title(class="form-control", placeholder="Enter event title") }}
+                        {% for error in form.title.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
 
                         <!-- Acronym -->
                         {{ form.acronym.label() }}
                         {{ form.acronym(class="form-control", placeholder="Enter event acronym") }}
+                        {% for error in form.acronym.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
 
                         <hr>
 
                         <!-- Web Page URL -->
                         {{ form.web_page_url.label() }}
                         {{ form.web_page_url(class="form-control", placeholder="Enter event webpage URL") }}
+                        {% for error in form.web_page_url.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
 
                         <!-- Venue -->
                         {{ form.venue.label() }}
                         {{ form.venue(class="form-control", placeholder="Enter event venue") }}
+                        {% for error in form.venue.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
 
                         <!-- City -->
                         {{ form.city.label() }}
                         {{ form.city(class="form-control", placeholder="Enter event city") }}
+                        {% for error in form.city.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
 
                         <!-- Country -->
                         {{ form.country.label() }}
                         {{ form.country(class="form-control", placeholder="Enter event country") }}
+                        {% for error in form.country.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
 
                         <hr>
 
                         <!-- First Day -->
                         {{ form.first_day.label() }}
                         {{ form.first_day(class="form-control", placeholder="Enter event first day") }}
+                        {% for error in form.first_day.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
 
                         <!-- Last Day -->
                         {{ form.last_day.label() }}
                         {{ form.last_day(class="form-control", placeholder="Enter event last day") }}
+                        {% for error in form.last_day.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
 
                         <hr>
 
                         <!-- Primary Area -->
                         {{ form.primary_area.label() }}
                         {{ form.primary_area(class="form-control", placeholder="Enter event primary area") }}
+                        {% for error in form.primary_area.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
 
                         <!-- Secondary Area -->
                         {{ form.secondary_area.label() }}
                         {{ form.secondary_area(class="form-control", placeholder="Enter event secondary area") }}
+                        {% for error in form.secondary_area.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
 
                         <!-- Area Notes -->
                         {{ form.area_notes.label() }}
                         {{ form.area_notes(class="form-control", placeholder="Enter area notes") }}
+                        {% for error in form.area_notes.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
 
                         <hr>
 
                         <!-- Organizer Name -->
                         {{ form.organizer_name.label() }}
                         {{ form.organizer_name(class="form-control", placeholder="Enter organizer name") }}
+                        {% for error in form.organizer_name.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
 
                         <!-- Organizer Email Address -->
                         {{ form.organizer_email_address.label() }}
                         {{ form.organizer_email_address(class="form-control", placeholder="Enter organizer email address") }}
+                        {% for error in form.organizer_email_address.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
 
                         <!-- Organizer Web Page -->
                         {{ form.organizer_web_page.label() }}
                         {{ form.organizer_web_page(class="form-control", placeholder="Enter organizer web page") }}
+                        {% for error in form.organizer_web_page.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
 
                         <!-- Phone No -->
                         {{ form.phone_no.label() }}
                         {{ form.phone_no(class="form-control", placeholder="Enter phone number") }}
+                        {% for error in form.phone_no.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
 
                         <hr>
 
                         <!-- Other Info -->
                         {{ form.other_info.label() }}
                         {{ form.other_info(class="form-control", placeholder="Enter other info") }}
+                        {% for error in form.other_info.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
 
                         <br><br>
                         {{ form.submit(class="btn btn-lg btn-block btn-primary animated-button") }}

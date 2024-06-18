@@ -37,18 +37,47 @@
                     </thead>
 
                     <tbody>
-                        {% for sub in submission %}
-                            <tr class="table-info">
-                                <td>{{ loop.index }}</td>
-                                <td>{{ sub.ps_email_address }}</td>
-                                <td>{{ sub.sub_datetime.strftime("%d-%m-%Y, %H:%M") }}</td>
-                                <td>
-                                    <a href="{{ url_for('download_file', filename=sub.document_file) }}" target="_blank">{{ sub.document_file}}</a>
-                                </td>
+                        <tr class="table-info">
+                            <td>{{ event.acronym.split(" ")[0] }}-001</td>
+                            <td>{{ submission.ps_email_address }}</td>
+                            <td>{{ submission.sub_datetime.strftime("%d-%m-%Y, %H:%M") }}</td>
+                            <td>
+                                <a href="{{ url_for('download_file', filename=submission.document_file) }}" target="_blank">{{ submission.document_file}}</a>
+                                
+                                {% if datetime.utcnow() <= event.last_day %}
+                                    <p class="reupload">(You can reupload the document before the deadline)</p>
+                                    <!--Upload and Submit Buttons-->
+                                    <form id="uploadForm" method="POST" enctype='multipart/form-data' class="flex-column">
+                                        {{ form.hidden_tag() }}  
+                                        <div class="flex-column mb-2">
+                                            <label for="document_file" id="uploadLabel" class="btn custom-upload-btn btn-primary btn-animation"> <i class="fas fa-edit"></i> Re-Upload</label>
+                                            <input type="file" name="document_file" id="document_file" class="d-none">
+                                        </div>
+                                        <span class="d-block mb-2" id="fileNameWrapper"><span id="fileName"></span></span>
+                                        <button type="submit" class="btn custom-submit-btn btn-success d-none upload-animation" id="uploadButton"><i class="fas fa-upload"></i> Submit</button>
+                                    </form>
+                                {% else %}
+                                    <p class="reupload">(The deadline for reuploading the document has passed.)</p>
+                                {% endif %}
+                            </td>
 
-                                    <td>{{ sub.status }}</td>
-                            </tr>
-                        {% endfor %}                     
+                                <td>
+                                    {% if submission.status == 'Submitted' %}
+                                        <span class="status-submitted">{{submission.status }}</span>
+                                    {% elif submission.status == 'In Progress' %}
+                                        <span class="status-in-progress">{{ submission.status }}</span>
+                                    {% elif submission.status == 'Approved' %}
+                                        <span class="status-approved">{{ submission.status }}</span>
+                                    {% elif submission.status == 'Rejected' %}
+                                        <span class="status-rejected">{{ submission.status }}</span>
+                                    {% elif submission.status == 'Need Changes' %}
+                                        <span class="status-need-changes">{{ submission.status }}</span>
+                                    {% else %}
+                                        <span>{{ submission.status }}</span>
+                                    {% endif %}
+                                </td>
+                        </tr>
+
                     </tbody>
                 </table>
             </div>
@@ -57,10 +86,84 @@
         {% endif %}
     </div>
 
-
+     <!-- Modal -->
+     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="successModalLabel" style="color: black;">Submission Confirmation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" style="color: black;">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            Your file has been successfully uploaded.
+            </div>
+            <div class="modal-footer">
+            <a href="{{ url_for('event_page') }}"><button type="button" class="btn btn-primary btn-animation" data-dismiss="modal">OK</button></a>
+            </div>
+        </div>
+        </div>
+    </div>
 
 </body>
 
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const uploadForm = document.getElementById('uploadForm');
+        const uploadLabel = document.getElementById('uploadLabel');
+        const fileName = document.getElementById('fileName');
+        const fileNameWrapper = document.getElementById('fileNameWrapper');
+        const uploadButton = document.getElementById('uploadButton');
+        const spinner = document.createElement('div');
+        spinner.classList.add('spinner-border', 'text-light');
+        spinner.setAttribute('role', 'status');
+        spinner.innerHTML = '<span class="visually-hidden">Loading...</span>';
+
+        uploadForm.addEventListener('change', function() {
+            const file = document.getElementById('document_file').files[0];
+            fileName.textContent = 'Selected File: ' + file.name;
+            fileNameWrapper.classList.remove('d-none'); 
+            uploadButton.classList.remove('d-none');
+        });
+
+        uploadForm.addEventListener('submit', function() {
+            uploadButton.innerHTML = '';
+            uploadButton.appendChild(spinner);
+        });
+
+        uploadForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(uploadForm);
+            
+            console.log(formData);
+
+            fetch(uploadForm.action, {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                console.log(response)
+                if(!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    $('#successModal').modal('show');
+                } else {
+                    alert('File upload failed: ' + data.message);
+                }
+            }).catch(error => {
+                alert('An error occurred: ' + error.message);
+            }).finally(() => {
+                uploadButton.innerHTML = 'Upload';
+                uploadButton.classList.add('d-none');
+            });
+        });
+    });
+</script>
 
 
 <style>
@@ -77,9 +180,13 @@
         font-weight: bold;
     }
 
-    p, span {
+    span {
         color: black;
         font-size: 22px;
+    }
+
+    tr {
+        font-size: 18px;
     }
 
     label {
@@ -115,28 +222,32 @@
         margin-left: 10px; 
     }
 
+    .reupload {
+        color: rgba(128, 128, 128, 0.953);
+    }
+
     .custom-upload-btn {
-        background-color: #007bff;
+        background-color: #d13f05;
         color: white;
         border: none;
-        padding: 10px 20px;
-        font-size: 1.2rem;
+        padding: 7px 10px;
+        font-size: 1.1rem;
     }
 
     .custom-upload-btn:hover {
-        background-color: #0056b3;
+        background-color: #88310f;
     }
 
     .custom-submit-btn {
-        background-color: #28a745;
+        background-color: #04a517;
         color: white;
         border: none;
-        padding: 10px 20px;
-        font-size: 1.2rem;
+        padding: 7px 10px;
+        font-size: 1.1rem;
     }
 
     .custom-submit-btn:hover {
-        background-color: #218838;
+        background-color: #056410;
     }
 
     .upload-animation {
@@ -149,7 +260,44 @@
     .location-heading {
         color: black;
     }
-    
+    .status-submitted {
+        background-color: beige;
+        padding: 10px;
+        color: rgb(156, 34, 194);
+        font-weight: bold;
+        font-family:Georgia, 'Times New Roman', Times, serif;
+    }
+    .status-in-progress {
+        background-color: beige;
+        padding: 10px;
+        color: rgb(15, 91, 120);
+        font-weight: bold;
+        font-family:Georgia, 'Times New Roman', Times, serif;
+    }
+    .status-approved {
+        background-color: beige;
+        padding: 10px;
+        color: green;
+        font-weight: bold;
+        font-family:Georgia, 'Times New Roman', Times, serif;
+    }
+
+    .status-rejected {
+        background-color:aliceblue;
+        padding: 10px;
+        color: red;
+        font-weight: bold;
+        font-family:Georgia, 'Times New Roman', Times, serif;
+    }
+
+    .status-need-changes {
+        background-color: beige;
+        padding: 10px;
+        color: #686e0e;
+        font-weight: bold;
+        font-family:Georgia, 'Times New Roman', Times, serif;
+    }
+
 </style>
 
 {% endblock %}

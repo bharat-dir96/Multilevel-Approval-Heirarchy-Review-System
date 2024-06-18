@@ -335,12 +335,47 @@ def event_registration(event_id):
 def allowed_file(filename):                                     #function used to define all the allowed extensions.
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/track-submissions/<int:event_id>')
+@app.route('/track-submissions/<int:event_id>', methods=['GET', 'POST'])
 def track_submission(event_id):
     event = Event.query.get_or_404(event_id)
-    submission = Submissions.query.filter(Submissions.event_id==event.id and Submissions.user_id==current_user.id).all()
+    submission = Submissions.query.filter_by(event_id=event.id, user_id=current_user.id).first()        #To retrive the correct submission of the current user for the current event.
+    resubmission_doc = SubmissionsForm()                                #Creating an object for resubmission of the document
 
-    return render_template('track_submission.html', event=event, submission=submission)
+    if resubmission_doc.validate_on_submit():
+        file = resubmission_doc.document_file.data
+
+        if file.filename == '':
+            return jsonify({'success': False, 'message': 'No File selected for reuploading'}), 400
+
+        if file and allowed_file(file.filename):                #checking if file extension is allowed
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),file_path))     #The uploaded file get saved in the specified folder.
+            
+            print(filename)
+
+            submission.document_file = filename
+
+            print(submission.document_file)
+
+            db.session.commit()
+
+            return jsonify({'success': True}), 200
+        
+        else:
+            return jsonify({'success': False, 'message': "Allowed file types are 'txt','pdf','xls','xlsx','doc','docx','ppt','pptx'"}), 400
+        
+    review = Reviews.query.filter_by(submission_id=submission.id).first()       #Retriving the review against the current submission
+
+    if review:
+        if review.action == 'Rejected':
+            submission.status = 'Rejected'
+        elif review.action == 'Approved without Feedback':
+            submission.status = 'Approved'
+        elif review.action == 'Approved with Feedback':
+            submission.status = 'Need Changes'
+        
+    return render_template('track_submission.html', event=event, submission=submission, form=resubmission_doc, datetime=datetime)
 
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #Organizer
@@ -743,8 +778,8 @@ def invitation_accepted(invitation_id):
     submission_details = Submissions.query.get(invitation_id)
     submission_details.status = "In Progress"
     print(current_user.id)
-    submission_details.current_asssigned_reviewer = current_user.id
-    print(submission_details.current_asssigned_reviewer)
+    submission_details.current_assigned_reviewer = current_user.id
+    print(submission_details.current_assigned_reviewer)
     db.session.commit()                      #Commit changes to the database after invite is accepted.
 
     session['invitation_accepted'] = True   
@@ -776,17 +811,21 @@ def post_review(invitation_id):
     print(f"Submission ID: {submission_id}")
 
     if request.method  == 'POST' and form.validate_on_submit():
+        title = form.title.data
+        description = form.description.data
+        action = form.action.data
+
         print(f"Title: {form.title.data}")
         print(f"Description: {form.description.data}")
 
         review = Reviews(
-            title = form.title.data,
-            description = form.description.data,
+            title = title,
+            description = description,
+            action = action,
             reviewer_id = current_user.id,
             event_id = invitation_id,
             submission_id = submission_id
         )
-        print(f"Review:{{review}}")
         db.session.add(review)
         try:
             db.session.commit()
@@ -795,9 +834,7 @@ def post_review(invitation_id):
             db.session.rollback()
             print(f"Database Error: {e}")
     else:
-        if request.method == 'POST':
-            # Print form errors to debug validation issues
-            print(f"Form errors: {form.errors}")
+        print(f"Form errors: {form.errors}")
         flash('Review is  not posted successfully. Please try again.', category='danger')
-    
+
     return render_template('review_posted_confirmation.html')

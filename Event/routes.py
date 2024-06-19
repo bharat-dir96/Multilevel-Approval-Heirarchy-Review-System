@@ -377,6 +377,17 @@ def track_submission(event_id):
         
     return render_template('track_submission.html', event=event, submission=submission, form=resubmission_doc, datetime=datetime)
 
+@app.route('/view-feedback/<int:submission_id>')
+def view_feedback(submission_id):
+    submission = Submissions.query.get(submission_id)
+    event_id = submission.event_id
+
+    event = Event.query.get(event_id)
+
+    review = Reviews.query.filter_by(submission_id=submission_id).first()
+    return render_template('view_feedback.html', submission=submission, event=event, review=review)
+
+
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #Organizer
 

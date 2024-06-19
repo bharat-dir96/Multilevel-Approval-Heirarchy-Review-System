@@ -71,7 +71,9 @@
                                     {% elif submission.status == 'Rejected' %}
                                         <span class="status-rejected">{{ submission.status }}</span>
                                     {% elif submission.status == 'Need Changes' %}
-                                        <span class="status-need-changes">{{ submission.status }}</span>
+                                        <span class="status-need-changes">{{ submission.status }}</span><br><br>
+                                        <p class="reupload">**Click on the button below to view the feedback to make changes.</p>
+                                        <a href="{{ url_for('view_feedback', submission_id=submission.id )}}"><button class="btn btn-info see-review-btn btn-animation">See Reviews</button></a>
                                     {% else %}
                                         <span>{{ submission.status }}</span>
                                     {% endif %}
@@ -248,6 +250,19 @@
 
     .custom-submit-btn:hover {
         background-color: #056410;
+    }
+
+    .see-review-btn {
+        background-color: #1063c9;
+        color: white;
+        border: none;
+        padding: 10px 10px;
+        font-size: 1.1rem;
+    }
+
+    .see-review-btn:hover {
+        background-color: #094c9e;
+        color: white;
     }
 
     .upload-animation {

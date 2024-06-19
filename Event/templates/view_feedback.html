@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ event.title }}
+{% endblock %}
+{% block content %}
+<body>
+    <div class="position-relative overflow-hidden p-5 p-md-7 m-md-3 text-left" style="background-color:rgb(165, 68, 8); color:white">
+
+            <h3>#{{ event.acronym.split(" ")[0] }}-001</h3>
+            {% if event %}
+                <h1 class="display-4 font-weight-bold">{{ event.title }}</h1>
+                <h2 class="font-weight-normal mb-4">{{ event.acronym }}</h2>
+            {% else %}
+                <p>There is no event corresponding to this submission.</p>
+            {% endif %}
+            
+            {% if submission %}
+                <h3 class="document-link">Document Link - <a href="{{ submission.document_file }}">{{ submission.document_file }}</a></h3>
+            {% else %}
+                <p>There is some error in showing the document link.</p>
+            {% endif %}
+
+            <div class="container custom-width mt-4 p-4 bg-light rounded shadow">
+                <div class="row" style="color:black">
+                    {% if review %}
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body text-left">
+                                    <h5 class="title">Title-</h5>
+                                    <h2 class="card-title">{{ review.title }}</h2>
+                                    <hr>
+                                    <p class="card-text"><strong>Description:</strong> {{ review.description  }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-md-10">
+                            <h5 class="text-center text-black">You have not received any reviews yet.</h5>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+    
+        </div>
+    
+</body>
+
+<style>
+    /* CSS animations */
+    .document-link a{
+        color: #4bf0f9;
+    }
+
+    .title {
+        font-size: 1.2rem;
+        font-family:Georgia, 'Times New Roman', Times, serif;
+    }
+
+    .card-title {
+        font-size: 2rem;
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .card-text {
+        font-size: 1.2rem;
+        font-family:'Times New Roman', Times, serif;
+    }
+
+    .custom-width {
+        width: 70%;
+        margin-left: 0;
+    }
+
+</style>
+
+{% endblock %}

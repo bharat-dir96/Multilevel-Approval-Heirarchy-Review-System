@@ -16,8 +16,11 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
-                    <h1 class="display-4 font-weight-normal mb-4">Congratulations!</h1>
-                    <p class="lead font-weight-normal mb-5">You are now logged in as admin.</p>
+                    <h1 class="display-4 font-weight-normal mb-4 title">InReview Web Application</h1>
+                    <h3 class="subtitle">Manuscript Management System</h3>
+                    <br>
+                    
+                    <h5 class="invite-text">Enter a no. to generate invite links for inviting reviewers:- </h5>
                     <form method="POST" class="form-signin" style="color:white">
                         {{ form.hidden_tag() }}
                         <div class="form-group">
@@ -63,4 +66,27 @@
         <div class="product-device product-device-2 box-shadow d-none d-md-block"></div>
     </div>
 </body>
+
+<style>
+    .title {
+        font-weight: bold;
+        font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        color: #fff;
+    }
+
+    .subtitle {
+    font-family:'Times New Roman', Times, serif;
+    animation: fadeInUp 2s ease-in-out;
+    }
+
+    .invite-text {
+    background-color: rgb(185, 37, 155);
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 10px 10px;
+    font-size: 1.2rem;
+    }
+    
+</style>
 {% endblock %}

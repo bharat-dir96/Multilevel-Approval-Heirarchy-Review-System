@@ -4,32 +4,133 @@
 {% endblock %}
 
 {% block content %}
-    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center" style="background-color:rgb(16, 98, 112); color:white">
+<body>
+    
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center main-header" style="background-color: #a919d9; color:white">
         <div class="col-md-5 p-lg-5 mx-auto my-5">
-            <h1 class="display-12 font-weight-normal">InReview Web App</h1>
-            <p class="lead">Review management system with multilevel approval hierarchy.</p>
-            <a class="btn btn-primary" href="{{ url_for('register_page') }}">Get Started</a>
+            <h1 class="title">InReview Web Application</h1>
+            <h4 class="subtitle">Manuscript Management System</h4>
+            <br>
+            <a class="btn btn-primary get-started-btn" href="{{ url_for('register_page') }}">Get Started</a>
         </div>
-        <div class="product-device box-shadow d-none d-md-block"></div>
-        <div class="product-device product-device-2 box-shadow d-none d-md-block"></div>
+        <div class="decorative-shape"></div>
+        <div class="decorative-shape-2"></div>
     </div>
     <div class="container">
         <div class="row">
             <div class="col-md-4 mb-4">
                 <h2 style="margin-top: 30px;">Login</h2>
                 <p>Already have an account? Login here.</p>
-                <a class="btn btn-primary btn-lg btn-block" href="{{ url_for('login_page') }}">Login</a>
+                <a class="btn btn-primary btn-lg btn-block custom-btn" href="{{ url_for('login_page') }}">Login</a>
             </div>
             <div class="col-md-4 mb-4">
                 <h2 style="margin-top: 30px;">Register</h2>
                 <p>New user? Register now to create an account?.</p>
-                <a class="btn btn-primary btn-lg btn-block" href="{{ url_for('register_page') }}">Register</a>
+                <a class="btn btn-primary btn-lg btn-block custom-btn" href="{{ url_for('register_page') }}">Register</a>
             </div>
             <div class="col-md-4 mb-4">
                 <h2 style="margin-top: 30px;">Admin</h2>
                 <p>Click here for admin login</p>
-                <a class="btn btn-primary btn-lg btn-block" href="{{ url_for('admin_login') }}">Admin</a>
+                <a class="btn btn-primary btn-lg btn-block custom-btn" href="{{ url_for('admin_login') }}">Admin</a>
             </div>
         </div>
     </div>
+</body>
+
+<style>       
+
+.title {
+        font-weight: bold;
+        font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        color: #fff;
+        animation: fadeInDown 2s ease-in-out;
+    }
+
+.subtitle {
+    font-family:'Times New Roman', Times, serif;
+    animation: fadeInUp 2s ease-in-out;
+}
+
+.get-started-btn {
+    background-color: rgb(185, 37, 155);
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    transition: all 0.3s ease-in-out;
+}
+
+.get-started-btn:hover {
+    background-color: rgb(96, 38, 84);
+    transform: scale(1.05);
+}
+
+.custom-btn {
+    background-color: #a919d9;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    transition: all 0.3s ease-in-out;
+}
+
+.custom-btn:hover {
+    background-color: #6e0990;
+    transform: scale(1.05);
+}
+
+.main-header {
+    background: linear-gradient(135deg, #a919d9, #6e0990);
+    position: relative;
+    overflow: hidden;
+    color: white;
+}
+
+.decorative-shape {
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: move 5s infinite ease-in-out;
+}
+
+.decorative-shape-2 {
+    position: absolute;
+    bottom: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: move 8s infinite ease-in-out;
+}
+
+
+@keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+</style>
 {% endblock %}

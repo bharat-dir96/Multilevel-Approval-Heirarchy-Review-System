@@ -32,7 +32,6 @@ class User(db.Model, UserMixin):
     last_login = db.Column(db.DateTime(), default=datetime.utcnow().replace(tzinfo=pytz.UTC).astimezone(pytz.timezone('Asia/Kolkata')), nullable=True)
     verification_token = db.Column(db.String(length=32), unique=True)
     is_verified = db.Column(db.Boolean, default=False)
-
     registered_events = db.relationship('Event', secondary=user_events, back_populates='registered_users')
     events = db.relationship('Event', backref='organizer', lazy=True)
     submissions = db.relationship('Submissions', backref='user', lazy=True)

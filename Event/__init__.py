@@ -34,6 +34,7 @@ app.config['MAIL_USERNAME'] = 'bharat.aggarwal@iic.ac.in'  # Your email address
 app.config['MAIL_PASSWORD'] = 'oosmxdatarkulncw'    # os.environ.get("Email_Password")  Your email password
 app.config['MAIL_USE_TLS'] = True  # Use TLS for secure connection
 app.config['MAIL_USE_SSL'] = False  # Use SSL (only if required)
+
 app.config['UPLOAD_FOLDER'] = 'static/Uploads'
 
 app.config['RECAPTCHA_USE_SSL'] = False

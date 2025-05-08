@@ -1,9 +1,37 @@
-# Multilevel-Approval-Heirarchy-Review-System
+### Cloning the Repository
 
-1) Activate the virtual environment using the below command in cmd -
+--> Clone the repository using the command below:
+```bash
+git clone https://github.com/bharat-dir96/Multilevel-Approval-Heirarchy-Review-System.git
+```
 
-.\myenv2\Scripts\activate
+--> Move into the directory where we have the project files:
+```bash
+cd Multilevel-Approval-Heirarchy-Review-System
+```
 
-2) Remember to run all the packages stored in requirements.txt file before running the project using this command -
+--> Create a virtual environment:
+```bash
+#Create our virtual environment
+python -m venv envname
+```
 
-python -m pip install -r requirements.txt
+--> Activate the virtual environemnt:
+```bash
+envname\scripts\activate
+```
+--> Install the requirements:
+```bash
+pip install -r requirements.txt
+```
+
+#
+### Running the App
+
+--> To run the App, we use:
+```bash
+python run.py
+```
+
+> ⚠ Then, the development server will be started at http://127.0.0.1:8000/
+
